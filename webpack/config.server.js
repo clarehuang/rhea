@@ -33,7 +33,7 @@ module.exports = (env = {}) => {
             loader: 'babel-loader',
             options: {
               presets: [
-                ['@babel/preset-env', { targets: { node: 'current' } }],
+                ['@babel/preset-env', { targets: { node: 'current' }, modules: 'cjs' }],
                 ['@babel/preset-react'],
                 [
                   '@babel/preset-typescript',

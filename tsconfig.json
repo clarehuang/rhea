@@ -62,7 +62,7 @@
   },
   "include": [
     "./src/component",
-    "./src/client"
+    "./src/client", "src/components/i18n.js"
   ],
   "exclude": [
     "./dist",
