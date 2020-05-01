@@ -1,7 +1,6 @@
-import React from 'react'
-import { Switch, Route } from 'react-router'
-import { Link } from 'react-router-dom'
-import { useTranslation } from 'react-i18next'
+import React, { SFC } from 'react'
+import { Switch, Route, StaticRouterProps, StaticRouter } from 'react-router'
+import { Link, BrowserRouterProps, BrowserRouter } from 'react-router-dom'
 import Home from './home/home'
 import About from './about/about'
 import { Layout } from 'antd'
@@ -10,12 +9,11 @@ import './main.less'
 const { Footer, Sider, Content } = Layout
 
 interface AppProps {
-  Router: any
-  routerProps?: any
+  Router: typeof BrowserRouter
+  routerProps?: BrowserRouterProps | StaticRouterProps
 }
 
 const App: React.SFC<AppProps> = ({ Router, routerProps }) => {
-  const { t } = useTranslation()
   return (
     <Router {...routerProps}>
       <Layout>
@@ -26,7 +24,7 @@ const App: React.SFC<AppProps> = ({ Router, routerProps }) => {
           </Switch>
         </Content>
         <Sider className="navbar-sider">
-          <Link to="/">{t('nav.planner')}</Link>
+          <Link to="/">PLANNER</Link>
           <Link to="/about">About</Link>
         </Sider>
       </Layout>

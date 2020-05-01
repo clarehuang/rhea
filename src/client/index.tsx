@@ -2,7 +2,6 @@ import React, { Suspense } from 'react'
 import { hydrate } from 'react-dom'
 import { BrowserRouter } from 'react-router-dom'
 import App from '../components/app'
-import './i18n'
 
 const BaseApp = () => {
   return (
