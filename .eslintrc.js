@@ -20,7 +20,7 @@ module.exports = {
       singleQuote: true,
       semi: false,
       arrowParens: 'always',
-      trailingComma: 'es5'
+      trailingComma: 'es5',
     }],
     'arrow-parens': [2, 'always'],
     camelcase: [2, { properties: 'never' }],

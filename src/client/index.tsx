@@ -1,20 +1,14 @@
-import React, { Suspense } from 'react'
+import React from 'react'
 import { hydrate } from 'react-dom'
 import { BrowserRouter } from 'react-router-dom'
+import langData from '../utils/i18n-langs.js'
 import App from '../components/app'
 
-const BaseApp = () => {
-  return (
-    <Suspense fallback={<div>Still loading i18n...</div>}>
-      <BrowserRouter>
-        <App Router={BrowserRouter} />
-      </BrowserRouter>
-    </Suspense>
-  )
-}
-
 const startup = () => {
-  return hydrate(<BaseApp />, document.getElementById('app-root')) //client and server side rendering
+  return hydrate(
+    <App Router={BrowserRouter} langData={langData} initialLang={navigator.language} />,
+    document.getElementById('app-root')
+  ) //client and server side rendering
 }
 
 startup()

@@ -7,9 +7,11 @@ const { Helmet } = require('react-helmet')
 const App = require('../../../dist/server/app').default
 const template = require('../template')
 const assets = require('../../../dist/server/assets.json')
+const langData = require('../../utils/i18n-langs')
 
 /* GET home page. */
 router.get('/*', (req, res, next) => {
+  console.log(req.locale.toString())
   const context = {
     userAgent: req.headers['user-agent'],
   }
@@ -20,6 +22,8 @@ router.get('/*', (req, res, next) => {
         location: req.originalUrl,
         context,
       },
+      langData,
+      initialLang: req.locale.toString(),
     })
   )
   const helmet = Helmet.renderStatic()
