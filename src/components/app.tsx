@@ -26,7 +26,7 @@ const App: React.SFC<AppProps> = ({ Router, routerProps }) => {
           </Switch>
         </Content>
         <Sider className="navbar-sider">
-          <Link to="/">{t('nav')}</Link>
+          <Link to="/">{t('nav.planner')}</Link>
           <Link to="/about">About</Link>
         </Sider>
       </Layout>
