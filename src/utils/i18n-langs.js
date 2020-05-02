@@ -1,10 +1,13 @@
 module.exports = {
-  'en-US': {
+  'en': {
     nav: {
       planner: 'PLANNR',
       journal: 'JOURNAL',
       settings: 'SETTINGS',
       language: 'ENGLISH/中文',
+    },
+    alt:{
+      profileImage:'profile-image',
     },
   },
   'zh-TW': {
@@ -13,6 +16,9 @@ module.exports = {
       journal: '日記',
       settings: '設定',
       language: 'ENGLISH/中文',
+    },
+    alt:{
+      profileImage:'頭像',
     },
   },
 }

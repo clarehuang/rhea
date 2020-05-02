@@ -3,32 +3,45 @@ import { Switch, Route, StaticRouterProps } from 'react-router'
 import { BrowserRouterProps, BrowserRouter } from 'react-router-dom'
 import { createI18n, I18nProvider } from 'react-simple-i18n'
 import { Layout } from 'antd'
-import Home from './home/home'
-import About from './about/about'
-import { SiderMenu } from './modules/siderMenu/sider'
+import { I18nType } from '../utils/i18n-langs'
+import Planner from './planner/planner'
+import Journal from './journal/journal'
+import Settings from './settings/settings'
+import { SiderMenu } from './modules'
 import './main.less'
 
 const { Footer, Content } = Layout
 
 interface AppProps {
+  availableLang?: string[]
+  fallbackLang?: string
   initialLang: string
-  langData: any
+  langData: I18nType
   Router: typeof BrowserRouter
   routerProps?: BrowserRouterProps | StaticRouterProps
 }
 
-const App: React.SFC<AppProps> = ({ langData, Router, routerProps, initialLang }) => {
+const App: React.SFC<AppProps> = ({
+  langData,
+  Router,
+  routerProps,
+  availableLang,
+  fallbackLang,
+  initialLang,
+}) => {
+  initialLang = availableLang.includes(initialLang) ? initialLang : fallbackLang
   return (
     <I18nProvider i18n={createI18n(langData, { lang: initialLang })}>
       <Router {...routerProps}>
         <Layout>
-          <Content>
+          <Content className="main-content">
+            <SiderMenu />
             <Switch>
-              <Route exact path="/" component={Home} />
-              <Route exact path="/about" component={About} />
+              <Route exact path="/planner" component={Planner} />
+              <Route exact path="/journal" component={Journal} />
+              <Route exact path="/settings" component={Settings} />
             </Switch>
           </Content>
-          <SiderMenu />
         </Layout>
         <Footer>Footer</Footer>
       </Router>

@@ -1,0 +1,55 @@
+@import '../../styles/variables';
+
+@sider-background: var(--bg-white);
+@sider-min-width:8rem;
+@sider-min-height:100vh;
+.nav-sider{
+  background-color: @sider-background;
+  display: flex;
+  padding: 0.75rem;
+  a{
+    
+    color: var(--color-gray-300);
+  }
+  a.active{
+    color: var(--color-gray-900);
+  }
+  a:hover, a:active{
+    color:var(--color-info);
+  }
+  // desktop and up
+  @media only screen and (min-width: 769px) {
+    width: fit-content;
+    min-width: @sider-min-width;
+    min-height: @sider-min-height;
+    align-items: center;
+    flex-direction: column;
+    position: fixed;
+    right: 0;
+    a{
+      padding: 0.25rem 0.35rem;
+    }
+    .ant-avatar-lg{
+      width: 5rem;
+      height: 5rem;
+      display: inline-block;
+    }
+    p{
+      margin-bottom: 2rem;
+    }
+  }
+  // tablet and down
+  @media only screen and (max-width: 768px) {
+    align-items: center;
+    justify-content: flex-end;
+    flex-direction: row;
+    position: relative;
+    font-size: 0.675rem;
+    a{
+      padding: 0.315rem 0.625rem;
+    }
+    .ant-avatar-lg{
+      margin-right: auto;
+    }
+  }
+}

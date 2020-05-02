@@ -6,7 +6,13 @@ import App from '../components/app'
 
 const startup = () => {
   return hydrate(
-    <App Router={BrowserRouter} langData={langData} initialLang={navigator.language} />,
+    <App
+      Router={BrowserRouter}
+      langData={langData}
+      initialLang={navigator.language}
+      fallbackLang={'en'}
+      availableLang={['en', 'zh-TW']}
+    />,
     document.getElementById('app-root')
   ) //client and server side rendering
 }

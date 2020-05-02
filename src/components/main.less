@@ -1,0 +1,124 @@
+@import './styles/variables';
+@asideHeight: 70px;
+
+* {
+  font-family: 'Open Sans', sans-serif;
+}
+
+/* color schema */
+.danger{
+  background-color: var(--color-danger);
+}
+.success{
+  background-color: var(--color-success);
+}
+.info{
+  background-color: var(--color-info);
+}
+.white{
+  background-color: var(--color-white);
+}
+.gray-100{
+  background-color: var(--color-gray-100);
+}
+.gray-300{
+  background-color: var(--color-gray-300);
+}
+.gray-500{
+  background-color: var(--color-gray-500);
+}
+.gray-700{
+  background-color: var(--color-gray-700);
+}
+.gray-900{
+  background-color: var(--color-gray-900);
+}
+.black{
+  background-color: var(--color-black);
+}
+
+/* text color schema */
+.text-danger{
+  color: var(--color-danger);
+}
+.text-success{
+  color: var(--color-success);
+}
+.text-info{
+  color: var(--color-info);
+}
+.text-white{
+  color: var(--color-white);
+}
+.text-gray-100{
+  color: var(--color-gray-100);
+}
+.text-gray-300{
+  color: var(--color-gray-300);
+}
+.text-gray-500{
+  color: var(--color-gray-500);
+}
+.text-gray-700{
+  color: var(--color-gray-700);
+}
+.text-gray-900{
+  color: var(--color-gray-900);
+}
+.text-black{
+  color: var(--color-black);
+}
+
+.text-semi-bold{
+  font-weight: 600;
+}
+.text-bold{
+  font-weight: bold;
+}
+
+.main-content{
+  @media only screen and (min-width: 769px){
+    min-height: calc(100vh - @asideHeight);
+  }
+}
+
+/* xs breakpoint */
+@media @mobile-xs {
+  .xs-hidden{
+    display: none;
+  }
+}
+
+/* sm breakpoint */
+@media @mobile-sm {
+  .sm-hidden{
+    display: none;
+  }
+}
+
+/* md breakpoint */
+@media @tablet-md {
+  .md-hidden{
+    display: none;
+  }
+}
+
+/* lg breakpoint */
+@media @desktop-lg {
+
+}
+
+/* xl breakpoint */
+@media @desktop-xl {
+
+}
+
+/* xxl breakpoint */
+@media @desktop-xxl {
+
+}
+
+/* bigger than xxl breakpoint */
+@media @desktop-xxxl{
+
+}
