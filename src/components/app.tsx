@@ -7,7 +7,7 @@ import { I18nType } from '../utils/i18n-langs'
 import Planner from './planner/planner'
 import Journal from './journal/journal'
 import Settings from './settings/settings'
-import { SiderMenu } from './modules'
+import { SiderMenu, Calendar } from './layout'
 import './main.less'
 
 const { Footer, Content } = Layout
@@ -34,8 +34,9 @@ const App: React.SFC<AppProps> = ({
     <I18nProvider i18n={createI18n(langData, { lang: initialLang })}>
       <Router {...routerProps}>
         <Layout>
-          <Content className="main-content">
+          <Content className="main-container">
             <SiderMenu />
+            <Calendar />
             <Switch>
               <Route exact path="/planner" component={Planner} />
               <Route exact path="/journal" component={Journal} />
@@ -43,7 +44,7 @@ const App: React.SFC<AppProps> = ({
             </Switch>
           </Content>
         </Layout>
-        <Footer>Footer</Footer>
+        <Footer className="main-footer">Footer</Footer>
       </Router>
     </I18nProvider>
   )
