@@ -7,6 +7,7 @@ import { I18nType } from '../utils/i18n-langs'
 import Planner from './planner/planner'
 import Journal from './journal/journal'
 import Settings from './settings/settings'
+import Register from './register/register'
 import { SiderMenu, Calendar } from './layout'
 import './main.less'
 
@@ -41,6 +42,7 @@ const App: React.SFC<AppProps> = ({
               <Route exact path="/planner" component={Planner} />
               <Route exact path="/journal" component={Journal} />
               <Route exact path="/settings" component={Settings} />
+              <Route exact path="/register" component={Register} />
             </Switch>
           </Content>
         </Layout>

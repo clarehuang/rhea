@@ -14,6 +14,7 @@ const availableLang = ['en', 'zh-TW']
 
 /* GET home page. */
 router.get('/*', (req, res, next) => {
+  console.log('user', req.user)
   const context = {
     userAgent: req.headers['user-agent'],
   }

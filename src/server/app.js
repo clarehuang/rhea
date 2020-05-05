@@ -4,7 +4,13 @@ const path = require('path')
 const cookieParser = require('cookie-parser')
 const createLocaleMiddleware = require('express-locale')
 const logger = require('morgan')
+const favicon = require('serve-favicon')
+const bodyParser = require('body-parser')
+const mongoose = require('mongoose')
+const passport = require('passport')
+const LocalStrategy = require('passport-local').Strategy
 
+const apiRouter = require('./api/index')
 const indexRouter = require('./routes/index')
 const app = express()
 
@@ -14,13 +20,35 @@ app.use((req, res, next) => {
 })
 
 app.use(logger('dev'))
-app.use(express.json())
+// app.use(express.json())
+app.use(bodyParser.json())
+app.use(bodyParser.json())
 app.use(createLocaleMiddleware())
-app.use(express.urlencoded({ extended: false }))
+// app.use(express.urlencoded({ extended: false }))
+app.use(bodyParser.urlencoded({ extended: false }))
 app.use(cookieParser())
+app.use(
+  require('express-session')({
+    secret: 'keyboard cat',
+    resave: false,
+    saveUninitialized: false,
+  })
+)
+app.use(passport.initialize())
+app.use(passport.session())
 app.use(express.static(path.join(__dirname, '../../dist/client'))) //靜態文件
 
+app.use('/api', apiRouter)
 app.use('/', indexRouter)
+
+// passport config
+const User = require('./models/user')
+passport.use(new LocalStrategy(User.authenticate()))
+passport.serializeUser(User.serializeUser())
+passport.deserializeUser(User.deserializeUser())
+
+// mongoose
+mongoose.connect('mongodb://localhost/passport_local_mongoose_express4')
 
 // catch 404 and forward to error handler
 app.use(function (req, res, next) {
