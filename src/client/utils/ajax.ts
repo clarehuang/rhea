@@ -38,7 +38,6 @@ const ajax = ({
       fail(responseObj, status, xhr)
     }
     if (complete) {
-      console.log(typeof complete())
       complete(responseObj, status, xhr)
     }
   }
