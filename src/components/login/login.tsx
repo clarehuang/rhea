@@ -1,7 +1,6 @@
 import React from 'react'
-import { Form, Input, Button } from 'antd'
+import { Form, Input, Button, Checkbox } from 'antd'
 import ajax from '../../client/utils/ajax'
-import { Store } from 'antd/lib/form/interface'
 
 const layout = {
   labelCol: { span: 8 },
@@ -11,10 +10,10 @@ const tailLayout = {
   wrapperCol: { offset: 8, span: 16 },
 }
 
-type AccountType = { username: string; password: string; values?: Store }
+type AccountType = { username: string; password: string }
 
 const Register = () => {
-  const onFinish = ({ username, password }: AccountType): void => {
+  const onFinish = ({ username, password }: AccountType) => {
     ajax({
       url: '/api/user/register',
       method: 'POST',
@@ -38,7 +37,7 @@ const Register = () => {
   }
 
   return (
-    <>
+    <div>
       <h1>Register</h1>
       <Form
         {...layout}
@@ -64,13 +63,17 @@ const Register = () => {
           <Input.Password />
         </Form.Item>
 
+        <Form.Item {...tailLayout} name="remember" valuePropName="checked">
+          <Checkbox>Remember me</Checkbox>
+        </Form.Item>
+
         <Form.Item {...tailLayout}>
           <Button type="primary" htmlType="submit">
-            Create An Account
+            Submit
           </Button>
         </Form.Item>
       </Form>
-    </>
+    </div>
   )
 }
 

@@ -8,6 +8,7 @@ module.exports = {
     },
     alt:{
       profileImage:'profile-image',
+      coverImage:'calendar-cover',
     },
   },
   'zh-TW': {
@@ -19,6 +20,7 @@ module.exports = {
     },
     alt:{
       profileImage:'頭像',
+      coverImage:'封面照',
     },
   },
 }

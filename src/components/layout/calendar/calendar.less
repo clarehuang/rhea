@@ -17,6 +17,10 @@
       object-fit: cover;
     }
   }
+  .ant-picker-cell:not(.ant-picker-cell-in-view){
+    opacity: 0;
+    pointer-events: none;
+  }
   @media only screen and (min-width: 769px) {
     width: @cover-width;
     height: 100vh;

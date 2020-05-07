@@ -4,8 +4,10 @@
 @asideHeight: 70px;
 
 .main-container{
+  position: relative;
   background-color: var(--bg-white);
-  min-height: calc(100vh - @asideHeight);
+  min-height: 100vh;
+  padding-bottom: calc(@asideHeight + 1rem);
 }
 .main-footer{
   background-color: var(--color-gray-100);
@@ -13,10 +15,14 @@
   @media only screen and (min-width: 1201px) {
     margin-left: @cover-max-width;
     background-color: var(--bg-white);
+    position: absolute;
+    bottom: 0;
   }
   @media only screen and (min-width: 769px) and (max-width: 1200px){
     margin-left:@cover-width;
     background-color: var(--bg-white);
+    position: absolute;
+    bottom: 0;
   }
 }
 

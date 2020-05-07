@@ -15,23 +15,20 @@ const availableLang = ['en', 'zh-TW']
 /* GET home page. */
 router.get('/*', (req, res, next) => {
   console.log('user', req.user)
-  console.log(req.originalUrl)
   const context = {
     userAgent: req.headers['user-agent'],
-    location: req.originalUrl,
   }
   const appString = renderToString(
     createElement(App, {
       Router: StaticRouter,
       routerProps: {
-        location: req.originalUrl,
         context,
+        location: req.originalUrl,
       },
       langData,
       initialLang: req.locale.toString(),
       fallbackLang,
       availableLang,
-      location: req.originalUrl,
     })
   )
   const helmet = Helmet.renderStatic()

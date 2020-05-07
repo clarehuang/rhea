@@ -1,7 +1,6 @@
 import React from 'react'
 import { NavLink } from 'react-router-dom'
 import { useI18n } from 'react-simple-i18n'
-import clsx from 'clsx'
 import { Avatar } from 'antd'
 import './siderMenu.less'
 
