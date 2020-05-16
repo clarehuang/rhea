@@ -1,0 +1,39 @@
+@import '../styles/variables.less';
+@import './calendar/calendar.less';
+@import './siderMenu/siderMenu.less';
+@footer-height: 54px;
+
+.layout{
+  position: relative;
+  background-color: var(--bg-white);
+  .content{
+    padding: 1rem;
+    min-height: calc(100vh - @footer-height);
+    @media only screen and (min-width: 1071px) {
+      margin-left: @cover-max-width;
+    }
+    @media only screen and (min-width: 769px) and (max-width: 1070px){
+      margin-left: @cover-width;
+    }
+    @media only screen and (max-width: 768px){
+      min-height: calc(100vh - (@mobile-nav-height + @calendar-height+ @footer-height));
+    }
+  }
+  .main-footer{
+    padding: 1rem;
+    background-color: var(--color-gray-100);
+    text-align: left;
+    @media only screen and (min-width: 1071px) {
+      margin-left: @cover-max-width;
+      background-color: var(--bg-white);
+    }
+    @media only screen and (min-width: 769px) and (max-width: 1070px){
+      margin-left:@cover-width;
+      background-color: var(--bg-white);
+    }
+    @media only screen and (max-width:768px) {
+      background-color: var(--color-gray-100);
+    }
+  }
+}
+

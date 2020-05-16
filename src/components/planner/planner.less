@@ -1,0 +1,72 @@
+@import '../styles/variables.less';
+
+@padding: 0.375rem 0.5rem;
+@font-size: 0.75rem;
+@tag-size: 0.5rem;
+
+
+// popover
+.add-task-form{
+  width: 285px;
+  max-width: 28rem;
+  input{
+    padding: @padding;
+    font-size: @font-size;
+  }
+  .ant-form-item-explain{
+    font-size: @font-size;
+  }
+  .ant-select{
+    font-size: @font-size;
+    input {
+      padding: 0;
+      font-size: inherit;
+    }
+  }
+  .ant-picker{
+    padding: @padding;
+    margin-right:0.5rem;
+    .ant-picker-input{
+      input{
+        font-size: @font-size;
+        padding: 0;
+      }
+      .ant-picker-suffix{
+        display: none;
+      }
+    }
+  }
+  .tag-select{
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    .ant-select-selection-search::after{
+      content:'';
+      display: inline-block;
+      width: @tag-size;
+      height: @tag-size;
+      border-radius: 50%;
+      background-color: var(--color-tag);
+      position: absolute;
+      top: 50%;
+      left: 0;
+      transform: translate(-10px, -50%);
+    }
+    .ant-select-selector{
+      padding-left: 0.875rem;
+    }
+  }
+  .add-task-buttons{
+    justify-content: space-between;
+    .ant-form-item{
+      width: 47.5%;
+      .ant-btn{
+        width: 100%;
+        // margin-right: 0.5rem;
+      }
+    }
+  }
+  .task-des{
+    font-size: @font-size;
+  }
+}

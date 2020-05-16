@@ -1,15 +1,12 @@
-@import '../../styles/variables';
-
-@sider-background: var(--bg-white);
+@nav-desktop-bg: var(--bg-white);
+@nav-mobile-bg: var(--color-gray-100);
 @sider-min-width:8rem;
 @sider-min-height:100vh;
 .nav-sider{
-  background-color: @sider-background;
   display: flex;
   padding: 0.75rem;
   a{
-    
-    color: var(--color-gray-300);
+    color: var(--color-gray-500);
   }
   a.active{
     color: var(--color-gray-900);
@@ -19,6 +16,7 @@
   }
   // desktop and up
   @media only screen and (min-width: 769px) {
+    background-color: @nav-desktop-bg;
     width: fit-content;
     min-width: @sider-min-width;
     min-height: @sider-min-height;
@@ -44,10 +42,14 @@
   }
   // tablet and down
   @media only screen and (max-width: 768px) {
+    background-color: @nav-mobile-bg;
+    width: 100%;
     align-items: center;
     justify-content: flex-end;
     flex-direction: row;
-    position: relative;
+    position: fixed;
+    top: 0;
+    z-index: 99;
     font-size: 0.675rem;
     a{
       padding: 0.315rem 0.625rem;

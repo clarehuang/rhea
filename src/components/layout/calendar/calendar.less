@@ -1,9 +1,11 @@
-@import '../../styles/variables.less';
-
 @cover-max-width: 25rem;
 @cover-width: 37.5%;
-@calendar-font-size: 0.6875rem;
+@calendar-font-size: 0.875rem;
 @calendar-width: 16rem;
+@calendar-height: 25rem;
+@calendar-today-small-font-size: 1.5rem;
+@calendar-today-large-font-size: 5rem;
+@mobile-nav-height:4rem;
 
 .calendar {
   display: flex;
@@ -16,38 +18,68 @@
       height: 100%;
       object-fit: cover;
     }
+    position: absolute;
+  }
+  .calendar-today{
+    position: absolute;
+    right: 0;
+    width: 10rem;
+    z-index: 1;
+    display: flex;
+    flex-wrap: wrap;
+    h1{
+      font-size: @calendar-today-large-font-size;
+      color: white;
+      text-shadow: 0px 0px 20px rgba(0, 0, 0, 0.25);
+      margin-bottom: 0;
+    }
+    h5{
+      font-size: @calendar-today-small-font-size;
+      color: white;
+      text-shadow: 0px 0px 20px rgba(0, 0, 0, 0.25);
+      margin-bottom: 0;
+    }
+    .ant-row.date{
+      flex: 1 0 100%;
+      display: flex;
+      align-items: baseline;
+      line-height: 1.25;
+      .month{
+        margin-right: 0.5rem;
+      }
+    }
+    .ant-row.week{
+      flex: 1 0 100%;
+      display: block;
+      font-size: @calendar-today-small-font-size;
+    }
+    @media only screen and (max-width: 768px) {
+      display: none;
+    }
   }
   .ant-picker-cell:not(.ant-picker-cell-in-view){
     opacity: 0;
     pointer-events: none;
   }
-  @media only screen and (min-width: 769px) {
-    width: @cover-width;
-    height: 100vh;
-    overflow: hidden;
-    max-width: @cover-max-width;
-    position: fixed;
-    left: 0;
-    .cover img{
-      object-position: left bottom;
-    }
-  }
-  @media only screen and (max-width: 768px) {
-    width: 100%;
-    height: 25rem;
-    overflow: hidden;
-    position: relative;
-    top:0;
-    left: 0;
-  }
   .calendar-module{
     position: absolute;
     width: @calendar-width;
+    min-width: 15.625rem;
     @media only screen and (min-width: 769px) {
       width: 100%;
       min-width: @calendar-width;
       padding: 0.875rem;
+      top: 10rem;
+      left: 50%;
+      transform: translate(-50%,0);
     }
+    @media only screen and (max-width: 768px) {
+      width: 90%;
+      max-width: 23.25rem;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%,-50%);
+    }  
     .ant-picker-calendar{
       background-color: var(--bg-calendar-header);
       .ant-picker-calendar-header{
@@ -110,18 +142,42 @@
         }
       }
     }
-
-    @media only screen and (min-width: 769px) {
-      top: 10rem;
-      left: 50%;
-      transform: translate(-50%,0);
+    .ant-picker-date-panel{
+      .ant-picker-content{
+        font-size: 0.625rem;
+        .ant-picker-cell.ant-picker-cell-in-view{
+          .ant-picker-cell-inner.ant-picker-calendar-date{
+            border-radius: 50%;
+            &::before{
+              border-radius: 50%;
+            }
+          }
+        }
+      }
     }
-    @media only screen and (max-width: 768px) {
 
-    }   
-    .ant-picker-content{
-      font-size: 0.625rem;
+  }
+  .ant-radio-button-wrapper-checked:not(.ant-radio-button-wrapper-disabled)::before {
+    background-color: var(--color-gray-900);
+  }
+  @media only screen and (min-width: 769px) {
+    width: @cover-width;
+    height: 100vh;
+    overflow: hidden;
+    max-width: @cover-max-width;
+    position: fixed;
+    left: 0;
+    .cover img{
+      object-position: left bottom;
     }
-
+  }
+  @media only screen and (max-width: 768px) {
+    margin-top: @mobile-nav-height;
+    width: 100%;
+    height: @calendar-height;
+    overflow: hidden;
+    position: relative;
+    top:0;
+    left: 0;
   }
 }

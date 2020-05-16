@@ -22,10 +22,6 @@ interface AppProps {
   routerProps?: BrowserRouterProps | StaticRouterProps
 }
 
-interface LayoutProps {
-  Comp: React.FC
-}
-
 const App: React.SFC<AppProps> = ({
   langData,
   Router,
