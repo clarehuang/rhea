@@ -14,7 +14,7 @@ const tailLayout = {
 type AccountType = { username: string; password: string; values?: Store }
 
 const Register = () => {
-  const onFinish = ({ username, password }: AccountType): void => {
+  const handleFinish = ({ username, password }: AccountType): void => {
     ajax({
       url: '/api/user/register',
       method: 'POST',
@@ -33,7 +33,7 @@ const Register = () => {
     })
   }
 
-  const onFinishFailed = (errorInfo) => {
+  const handleFinishFailed = (errorInfo: any) => {
     console.log('Failed:', errorInfo)
   }
 
@@ -44,8 +44,8 @@ const Register = () => {
         {...layout}
         name="basic"
         initialValues={{ remember: true }}
-        onFinish={onFinish}
-        onFinishFailed={onFinishFailed}
+        onFinish={handleFinish}
+        onFinishFailed={handleFinishFailed}
         style={{ width: '400px' }}
       >
         <Form.Item

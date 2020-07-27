@@ -2,6 +2,7 @@ import React, { useEffect, useState, useRef } from 'react'
 import { Form, Input, Button, TimePicker, Row, Select } from 'antd'
 import { TagColor } from '../type'
 import './planner.less'
+import ajax from '../../client/utils/ajax'
 import { FormInstance } from 'antd/lib/form'
 import { Store } from 'antd/lib/form/interface'
 
@@ -65,6 +66,21 @@ const AddTask: React.FC<AddTaskProps> = ({ selectedTagColor = tagColor['home'], 
     formRef?.current.resetFields()
     onOpen?.(false)
     console.log('Received values of form: ', values)
+    ajax({
+      url: '/api/task/planner',
+      method: 'POST',
+      data: values,
+      success(res, status) {
+        //TODO : finish success action, indluding redirect to home page
+        console.log(status, res)
+        console.log('post task sucess')
+      },
+      fail(res, status) {
+        //TODO : finish fail action, indluding error handling
+        console.log(status, res)
+        console.log('post task fails')
+      },
+    })
   }
   const handleFinishFailed = (errorInfo: object) => {
     console.log('Failed:', errorInfo)

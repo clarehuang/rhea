@@ -2,13 +2,28 @@ const mongoose = require('mongoose')
 const Schema = mongoose.Schema
 
 // Data modeling
-const Task = new Schema({
-  title: String,
-  location: String,
-  start: String,
-  end: String,
-  tag: String,
-  des: String,
+const TaskSchema = new Schema({
+  title: {
+    type: String,
+    required: true,
+  },
+  location: {
+    type: String,
+  },
+  start: {
+    type: String,
+    required: true,
+  },
+  end: {
+    type: String,
+    required: true,
+  },
+  tag: {
+    type: String,
+  },
+  des: {
+    type: String,
+  },
 })
 
-module.exports = mongoose.model('Task', Task)
+module.exports = mongoose.model('Task', TaskSchema)
