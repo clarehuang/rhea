@@ -1,10 +1,12 @@
 import React, { useEffect, useState, useRef } from 'react'
-import { Form, Input, Button, TimePicker, Row, Select } from 'antd'
+import { Form, Input, Button, TimePicker, Row, Select, DatePicker } from 'antd'
 import { TagColor } from '../type'
 import './planner.less'
 import ajax from '../../client/utils/ajax'
 import { FormInstance } from 'antd/lib/form'
 import { Store } from 'antd/lib/form/interface'
+
+const { RangePicker } = DatePicker
 
 // TODO: replace with real data
 const tagColor: TagColor = {
@@ -35,11 +37,14 @@ const AddTask: React.FC<AddTaskProps> = ({ selectedTagColor = tagColor['home'], 
     location: {
       rules: [{ required: false }],
     },
-    startTime: {
+    range: {
       rules: [{ required: true, message: 'Missing.' }],
     },
+    startTime: {
+      rules: [{ required: false, message: 'Missing.' }],
+    },
     endTime: {
-      rules: [{ required: true, message: 'Missing.' }],
+      rules: [{ required: false, message: 'Missing.' }],
     },
     tag: {
       rules: [{ required: false }],
@@ -58,12 +63,14 @@ const AddTask: React.FC<AddTaskProps> = ({ selectedTagColor = tagColor['home'], 
       ...fieldsValue,
       title: fieldsValue['title'],
       location: fieldsValue['location'],
+      range: fieldsValue['range'],
       'start-time': fieldsValue['start-time'].format('hh:mm a'),
       'end-time': fieldsValue['end-time'].format('hh:mm a'),
       tag: fieldsValue['tag'],
       des: fieldsValue['des'],
     }
     formRef?.current.resetFields()
+    console.log('all', values)
     onOpen?.(false)
     console.log('Received values of form: ', values)
     ajax({
@@ -109,6 +116,19 @@ const AddTask: React.FC<AddTaskProps> = ({ selectedTagColor = tagColor['home'], 
         <Input type="Location" placeholder="Location" />
       </Form.Item>
       <Row style={{ justifyContent: 'flex-start' }}>
+        <Form.Item name="range" {...config.range}>
+          <RangePicker
+            showTime={{ format: 'HH:mm' }}
+            format="YYYY-MM-DD HH:mm"
+            onChange={(value) => {
+              console.log('Selected Time: ', value)
+            }}
+            onOk={(value) => {
+              console.log('onOk: ', value)
+            }}
+          />
+        </Form.Item>
+
         <Form.Item name="start-time" {...config.startTime}>
           <TimePicker use12Hours format="hh:mm a" minuteStep={5} placeholder="Start Time" />
         </Form.Item>

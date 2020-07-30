@@ -52,7 +52,6 @@ mongoose.connect('mongodb://localhost:27017/rhea', (err) => {
   if (err) {
     console.log(err)
   }
-  console.log('mongo connected')
 })
 
 // catch 404 and forward to error handler

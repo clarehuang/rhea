@@ -7,7 +7,6 @@ const router = express.Router()
 // })
 
 router.post('/planner', function (req, res) {
-  console.log('planner', req.body)
   const task = new Task(req.body)
   task.save(function (err) {
     if (err) {
