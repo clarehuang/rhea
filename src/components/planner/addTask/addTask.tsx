@@ -1,28 +1,22 @@
 import React, { useEffect, useState, useRef } from 'react'
-import { Form, Input, Button, TimePicker, Row, Select, DatePicker } from 'antd'
-import { TagColor } from '../type'
-import './planner.less'
-import ajax from '../../client/utils/ajax'
+import { Form, Input, Button, Row, Select, DatePicker } from 'antd'
 import { FormInstance } from 'antd/lib/form'
 import { Store } from 'antd/lib/form/interface'
+import { Tags } from '../index'
+import ajax from '../../../client/utils/ajax'
 
 const { RangePicker } = DatePicker
-
-// TODO: replace with real data
-const tagColor: TagColor = {
-  home: '#a11a0f',
-  work: '#dc833c',
-}
 
 interface AddTaskProps {
   selectedTagColor?: string
   id?: string
+  visible?: boolean
   onOpen?: (visible: boolean) => void
 }
 
 const { Option } = Select
 const { TextArea } = Input
-const AddTask: React.FC<AddTaskProps> = ({ selectedTagColor = tagColor['home'], onOpen }) => {
+const AddTask: React.FC<AddTaskProps> = ({ selectedTagColor = Tags['home'][1], onOpen }) => {
   const formRef: React.Ref<FormInstance> = useRef(null)
   const [tagColorPicked, setTagColorPicked] = useState(selectedTagColor)
   useEffect(() => {
@@ -40,12 +34,6 @@ const AddTask: React.FC<AddTaskProps> = ({ selectedTagColor = tagColor['home'], 
     range: {
       rules: [{ required: true, message: 'Missing.' }],
     },
-    startTime: {
-      rules: [{ required: false, message: 'Missing.' }],
-    },
-    endTime: {
-      rules: [{ required: false, message: 'Missing.' }],
-    },
     tag: {
       rules: [{ required: false }],
     },
@@ -56,23 +44,20 @@ const AddTask: React.FC<AddTaskProps> = ({ selectedTagColor = tagColor['home'], 
 
   const handleReset = (): void => {
     formRef?.current.resetFields()
+    onOpen?.(false)
+    setTagColorPicked(Tags[formRef?.current.getFieldsValue().tag][1])
   }
-  // const handleSubmit = (): void => {}
   const handleFinish = (fieldsValue: Store): void => {
     const values = {
       ...fieldsValue,
       title: fieldsValue['title'],
       location: fieldsValue['location'],
       range: fieldsValue['range'],
-      'start-time': fieldsValue['start-time'].format('hh:mm a'),
-      'end-time': fieldsValue['end-time'].format('hh:mm a'),
       tag: fieldsValue['tag'],
       des: fieldsValue['des'],
     }
     formRef?.current.resetFields()
-    console.log('all', values)
     onOpen?.(false)
-    console.log('Received values of form: ', values)
     ajax({
       url: '/api/task/planner',
       method: 'POST',
@@ -88,13 +73,14 @@ const AddTask: React.FC<AddTaskProps> = ({ selectedTagColor = tagColor['home'], 
         console.log('post task fails')
       },
     })
+    setTagColorPicked(Tags[formRef?.current.getFieldsValue().tag][1])
   }
   const handleFinishFailed = (errorInfo: object) => {
     console.log('Failed:', errorInfo)
   }
 
   const handleTagChange = (value: string): void => {
-    setTagColorPicked(tagColor[value])
+    setTagColorPicked(Tags[value][1])
   }
 
   return (
@@ -115,33 +101,15 @@ const AddTask: React.FC<AddTaskProps> = ({ selectedTagColor = tagColor['home'], 
       <Form.Item name="location" {...config.location}>
         <Input type="Location" placeholder="Location" />
       </Form.Item>
-      <Row style={{ justifyContent: 'flex-start' }}>
-        <Form.Item name="range" {...config.range}>
-          <RangePicker
-            showTime={{ format: 'HH:mm' }}
-            format="YYYY-MM-DD HH:mm"
-            onChange={(value) => {
-              console.log('Selected Time: ', value)
-            }}
-            onOk={(value) => {
-              console.log('onOk: ', value)
-            }}
-          />
-        </Form.Item>
 
-        <Form.Item name="start-time" {...config.startTime}>
-          <TimePicker use12Hours format="hh:mm a" minuteStep={5} placeholder="Start Time" />
-        </Form.Item>
-        <Form.Item name="end-time" {...config.endTime}>
-          <TimePicker use12Hours format="hh:mm a" minuteStep={5} placeholder="End Time" />
-        </Form.Item>
-        <Form.Item name="tag" style={{ width: '99px' }} {...config.tag}>
-          <Select onChange={handleTagChange} className="tag-select" bordered={false}>
-            <Option value="home">Home</Option>
-            <Option value="work">Work</Option>
-          </Select>
-        </Form.Item>
-      </Row>
+      <Form.Item name="range" {...config.range}>
+        <RangePicker
+          showTime={{ format: 'HH:mm' }}
+          format="YYYY-MM-DD HH:mm"
+          style={{ marginRight: 0 }}
+          use12Hours={true}
+        />
+      </Form.Item>
       <Form.Item name="des" {...config.des}>
         <TextArea
           placeholder="Description"
@@ -149,6 +117,15 @@ const AddTask: React.FC<AddTaskProps> = ({ selectedTagColor = tagColor['home'], 
           className="task-des"
         />
       </Form.Item>
+      <Form.Item name="tag" style={{ width: '40%' }} {...config.tag}>
+        <Select onChange={handleTagChange} className="tag-select" bordered={false}>
+          <Option value="home">Home</Option>
+          <Option value="work">Work</Option>
+          <Option value="finance">Finance</Option>
+          <Option value="other">Other</Option>
+        </Select>
+      </Form.Item>
+
       <Row className="add-task-buttons">
         <Form.Item>
           <Button className="outline-button" onClick={handleReset}>
@@ -165,4 +142,4 @@ const AddTask: React.FC<AddTaskProps> = ({ selectedTagColor = tagColor['home'], 
   )
 }
 
-export { AddTask }
+export default AddTask

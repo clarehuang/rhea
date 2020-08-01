@@ -8,7 +8,7 @@ import Planner from './planner/planner'
 import Journal from './journal/journal'
 import Settings from './settings/settings'
 import Register from './register/register'
-import { Layout } from './layout/index'
+import { Layout } from './_layout/index'
 import './main.less'
 
 const { Content } = AntLayout

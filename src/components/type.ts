@@ -1,7 +1,7 @@
 type FormatString = { format(...replacements: string[]): string }
 
-export type TagColor = {
-  [key: string]: string
+export type TagData = {
+  [key: string]: Array<string>
 }
 
 export type Task = {

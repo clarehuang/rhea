@@ -29,7 +29,14 @@
     border-color: var(--color-gray-500);
   }
 }
-
+.tag{
+  &:focus{
+    outline:none;
+    background-color: white;
+    box-shadow: @focus-effect;
+    border-color: var(--color-gray-500);
+  }
+}
 .outline-button{
   border-color: var(--color-black);
   &:active, &:hover{

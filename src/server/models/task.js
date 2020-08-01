@@ -10,12 +10,8 @@ const TaskSchema = new Schema({
   location: {
     type: String,
   },
-  'start-time': {
-    type: String,
-    required: true,
-  },
-  'end-time': {
-    type: String,
+  range: {
+    type: Array,
     required: true,
   },
   tag: {

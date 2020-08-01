@@ -5,7 +5,7 @@
 @tag-size: 0.5rem;
 
 
-// popover
+// AddTask form
 .add-task-form{
   width: 285px;
   max-width: 28rem;
@@ -36,6 +36,18 @@
       }
     }
   }
+  .add-task-buttons{
+    justify-content: space-between;
+    .ant-form-item{
+      width: 47.5%;
+      .ant-btn{
+        width: 100%;
+      }
+    }
+  }
+  .task-des{
+    font-size: @font-size;
+  }
   .tag-select{
     white-space: nowrap;
     overflow: hidden;
@@ -56,17 +68,39 @@
       padding-left: 0.875rem;
     }
   }
-  .add-task-buttons{
-    justify-content: space-between;
-    .ant-form-item{
-      width: 47.5%;
-      .ant-btn{
-        width: 100%;
-        // margin-right: 0.5rem;
-      }
+}
+
+// TagFilter
+.task-tag-filter{
+  margin: 0.75rem 0;
+  display: flex;
+  .tag{
+    cursor: pointer;
+    border: none;
+    background: none;
+    margin-right: 0.5rem;
+    border-radius: 0.5rem;
+    width: fit-content;
+    position: relative;
+    padding:0 0.5rem;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    .label-color{
+      margin-right: 0.25rem;
+      display: inline-block;
+      width: @tag-size;
+      height: @tag-size;
+      border-radius: 50%;
     }
-  }
-  .task-des{
-    font-size: @font-size;
+    // focus state is in the file of '../main.less'
+    &:active{
+      outline: none;
+      background: #f0f0f0;
+      border: none;
+    }
+    &.selected{
+      background: #f0f0f0;
+    }
   }
 }
