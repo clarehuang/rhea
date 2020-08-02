@@ -1,5 +1,6 @@
 import { default as AddTask } from './addTask/addTask'
 import { default as TagFilter } from './tagFilter/tagFilter'
+import { default as TaskTimeline } from './taskTimeline/taskTimeline'
 import { TagData } from '../type'
 
 //TODO: replace with tag dataset
@@ -11,4 +12,4 @@ const Tags: TagData = {
   other: ['Other', '#4a413f'],
 }
 
-export { AddTask, TagFilter, Tags }
+export { AddTask, TagFilter, Tags, TaskTimeline }

@@ -1,13 +1,18 @@
 @import './styles/variables';
 :root{
   --antd-wave-shadow-color: #404040;
-  --btn-focus-box-shadow: rgba(0, 0, 0, 0.15);
+  --btn-focus-box-shadow: rgba(0, 0, 0, 0.125);
 }
 @focus-effect: 0 0 0 3px var(--btn-focus-box-shadow);
 @box-shadow: 0 3px 8px -6px rgba(0, 0, 0, 0.3), 0 0 8px 0 rgba(0, 0, 0, 0.08), 0 0 10px 3px rgba(0, 0, 0, 0.05);
 @box-shadow-base: #404040;
 .main-container{
   position: relative;
+}
+.ant-popover-arrow{
+  @media only screen and (max-width: 768px){
+    display: none;
+  }
 }
 
 * {

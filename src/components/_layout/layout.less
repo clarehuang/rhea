@@ -6,6 +6,11 @@
 .layout{
   position: relative;
   background-color: var(--bg-white);
+  .nav-sider{
+    @media only screen and (max-width: 768px){
+      padding-right: 3.75rem;
+    }
+  }
   .content{
     padding: 1rem;
     min-height: calc(100vh - @footer-height);

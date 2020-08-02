@@ -1,7 +1,7 @@
 import React, { useState } from 'react'
 import { Button, Popover } from 'antd'
 import { PlusOutlined } from '@ant-design/icons'
-import { AddTask, TagFilter, Tags } from './index'
+import { AddTask, TagFilter, Tags, TaskTimeline } from './index'
 import './planner.less'
 
 const Planner = (): JSX.Element => {
@@ -23,11 +23,17 @@ const Planner = (): JSX.Element => {
   return (
     <div className="planner-container">
       <Popover content={content} trigger="click" visible={visible} onVisibleChange={handleVisible}>
-        <Button type="primary" icon={<PlusOutlined />} size="large" className="primary-button">
-          ADD NEW TASK
+        <Button
+          type="primary"
+          icon={<PlusOutlined />}
+          size="large"
+          className="primary-button task-btn-sm"
+        >
+          <span className="btn-content">ADD NEW TASK</span>
         </Button>
       </Popover>
       <TagFilter initialTag={tag} selectedTag={tag} tagData={Tags} onSelectTag={handleTag} />
+      <TaskTimeline />
     </div>
   )
 }

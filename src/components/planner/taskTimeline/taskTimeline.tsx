@@ -1,0 +1,64 @@
+import React, { useEffect } from 'react'
+import { Timeline } from 'antd'
+import { EnvironmentOutlined } from '@ant-design/icons'
+import { Tags } from '../index'
+import { TaskData } from '../../type'
+import clsx from 'clsx'
+
+interface TaskTimelineProps {
+  children?: React.ReactNode
+}
+
+const data: TaskData = [
+  {
+    title: 'Grocery Trip',
+    location: 'Fremont, CA',
+    range: [{ d: '09:00 - 12:00' }],
+    tag: 'home',
+    des:
+      'It is a long established fact that a reader will be distracted by the readable content of a page when looking at its layout.',
+  },
+  {
+    title: 'Meeting with Bob',
+    location: 'San Jose, CA',
+    range: [],
+    tag: 'work',
+    des:
+      "There are many variations of passages of Lorem Ipsum available, but the majority have suffered alteration in some form, by injected humour, or randomised words which don't look even slightly believable.",
+  },
+]
+
+const TaskTimeline: React.FC<TaskTimelineProps> = () => {
+  const RenderTimeline = (items: TaskData): React.ReactNode => {
+    return items.map((item, index: number) => (
+      <Timeline.Item
+        label="09:00 - 12:00"
+        className={clsx(`task-${item.tag}`)}
+        key={`task-timeline-${index}`}
+      >
+        <h3>{item.title}</h3>
+        <p>{item.des}</p>
+        <a href="/planner">
+          <EnvironmentOutlined style={{ marginRight: '0.5rem' }} />
+          {item.location}
+        </a>
+      </Timeline.Item>
+    ))
+  }
+  useEffect(() => {
+    for (let i = 0; i < Object.keys(Tags).length; i++) {
+      const key = Object.keys(Tags)[i]
+      const list = document.querySelectorAll(
+        `.task-${key} .ant-timeline-item-head.ant-timeline-item-head-blue`
+      )
+      list.forEach((item) => (item.style.backgroundColor = Tags[key][1]))
+    }
+  }, [])
+  return (
+    <div className="task-timeline">
+      <Timeline mode="left">{RenderTimeline(data)}</Timeline>
+    </div>
+  )
+}
+
+export default TaskTimeline

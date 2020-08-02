@@ -32,7 +32,7 @@ const AddTask: React.FC<AddTaskProps> = ({ selectedTagColor = Tags['home'][1], o
       rules: [{ required: false }],
     },
     range: {
-      rules: [{ required: true, message: 'Missing.' }],
+      rules: [{ required: true, message: 'Please enter the date and time.' }],
     },
     tag: {
       rules: [{ required: false }],
@@ -74,6 +74,7 @@ const AddTask: React.FC<AddTaskProps> = ({ selectedTagColor = Tags['home'][1], o
       },
     })
     setTagColorPicked(Tags[formRef?.current.getFieldsValue().tag][1])
+    console.log(values)
   }
   const handleFinishFailed = (errorInfo: object) => {
     console.log('Failed:', errorInfo)
