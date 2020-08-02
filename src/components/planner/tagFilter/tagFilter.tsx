@@ -5,13 +5,12 @@ import { TagData } from '../../type'
 interface TagFilterProps {
   tagData: TagData
   selectedTag?: string
-  initialTag?: string
   onSelectTag?: (tag: string) => void
   selectedTagColor?: string
   children?: React.ReactNode
 }
 
-const TagFilter: React.FC<TagFilterProps> = ({ initialTag, tagData, selectedTag, ...props }) => {
+const TagFilter: React.FC<TagFilterProps> = ({ tagData, selectedTag, ...props }) => {
   const handleClick = (e: React.MouseEvent | React.KeyboardEvent): void => {
     const elem = e.currentTarget as HTMLButtonElement
     if (

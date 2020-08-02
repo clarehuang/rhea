@@ -32,8 +32,8 @@ const Planner = (): JSX.Element => {
           <span className="btn-content">ADD NEW TASK</span>
         </Button>
       </Popover>
-      <TagFilter initialTag={tag} selectedTag={tag} tagData={Tags} onSelectTag={handleTag} />
-      <TaskTimeline />
+      <TagFilter selectedTag={tag} tagData={Tags} onSelectTag={handleTag} />
+      <TaskTimeline filterValue={tag} />
     </div>
   )
 }

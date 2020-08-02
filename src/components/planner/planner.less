@@ -3,6 +3,9 @@
 @padding: 0.375rem 0.5rem;
 @font-size: 0.75rem;
 @tag-size: 0.5rem;
+@timeline-card-edit: #f0f0f0;
+@box-shadow: 0 3px 8px -6px rgba(0, 0, 0, 0.3), 0 0 8px 0 rgba(0, 0, 0, 0.08), 0 0 10px 3px rgba(0, 0, 0, 0.05);
+@box-shadow-edit: 0 3px 8px -6px rgba(0, 0, 0, 0.3), 0 0 8px 0 rgba(0, 0, 0, 0.08), 0 0 10px 3px rgba(0, 0, 0, 0.05);
 
 .planner-container{
   .task-btn-sm{
@@ -128,8 +131,8 @@
   margin: 1.25rem 0;
   padding: 1rem 0;
   @media only screen and (min-width: 1071px) {
-    width: 60%;
-    max-width: 56rem;
+    width: 65%;
+    max-width: 57.5rem;
   }
   @media only screen and (min-width: 769px) and (max-width: 1070px){
     width: 80%;
@@ -138,12 +141,11 @@
     width: 100%;
     min-width: 20rem;
   }
-  
   .ant-timeline-item .ant-timeline-item-head.ant-timeline-item-head-blue{
     border-color:transparent;
   }
   .ant-timeline-item .ant-timeline-item-label{
-    width: fit-content;
+    width: 5.625rem;
     @media only screen and (max-width: 768px){
       font-size: 0.75rem;
       width: 5rem;
@@ -152,19 +154,92 @@
   }
   .ant-timeline-item .ant-timeline-item-tail,
   .ant-timeline-item .ant-timeline-item-head.ant-timeline-item-head-blue{
-    left: 10rem;
+    left: 7.5rem;
     @media only screen and (max-width: 768px){
-      left: 5rem;
+      left: 5.5rem;
     }
   }
   .ant-timeline-item .ant-timeline-item-content{
-    left: 10rem !important;
+    left: 7.5rem !important;
     @media only screen and (max-width: 768px){
-      left: 5rem !important;
+      left: 4.5rem !important;
       width: calc(60% - 1rem);
       p{
         font-size: 0.75rem;
       }
     }
+  }
+  .ant-timeline-item-content{
+    @media only screen and (max-width: 768px){
+      width: calc(80% - 28px) !important;
+    }
+    .task-timeline-card{
+      display: flex;
+      align-items: stretch;
+      position: relative;
+      margin-top:0rem;
+      padding: 0;
+      .task-timeline-card-content{
+        padding: 0.5rem 0.75rem;
+      }
+      .task-timeline-action{
+        display: none;
+      }
+    }
+    &:hover{
+      width:calc(75% - 14px) !important;
+      max-width: 57.5rem;
+      box-shadow:@box-shadow;
+      .task-timeline-card{
+        .task-timeline-card-content{
+          width: calc(80% - 14px);
+        }
+        .task-timeline-action{
+          display: flex;
+          width: 40%;
+          padding: 0.5rem 0.75rem;
+          background-color: @timeline-card-edit ;
+        }
+      }
+      @media only screen and (max-width: 768px){
+        width: calc(80% - 28px) !important;
+        .task-timeline-card{
+          display: block;
+          .task-timeline-card-content{
+            width: 100%;
+          }
+          .task-timeline-action{
+            display: flex;
+            width: 100%;
+          }
+        }
+      } 
+    }
+    
+  }
+}
+
+// TaskAction
+.task-timeline-action{
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: center;
+  button{
+    margin: 0.325rem;
+    border: none;
+    background: transparent;
+    &:hover{
+      color: var(--color-black);
+    }
+  }
+  .task-timeline-action-delete:focus{
+    color: var(--color-danger);
+  }
+  .task-timeline-action-edit:focus{
+    color: var(--color-gray-700);
+  }
+  .task-timeline-action-check:focus{
+    color: var(--color-success);
   }
 }
