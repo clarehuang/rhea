@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react'
+import React, { useState, useEffect } from 'react'
 import { Timeline } from 'antd'
 import { EnvironmentOutlined } from '@ant-design/icons'
 import { Tags, TaskAction } from '../index'
@@ -18,6 +18,7 @@ const data: TaskData = [
     tag: 'home',
     des:
       'It is a long established fact that a reader will be distracted by the readable content of a page when looking at its layout.',
+    status: 'default',
   },
   {
     title: 'Meeting with Bob',
@@ -26,6 +27,7 @@ const data: TaskData = [
     tag: 'work',
     des:
       "There are many variations of passages of Lorem Ipsum available, but the majority have suffered alteration in some form, by injected humour, or randomised words which don't look even slightly believable.",
+    status: 'default',
   },
   {
     title: 'Grocery Trip',
@@ -34,6 +36,7 @@ const data: TaskData = [
     tag: 'home',
     des:
       'It is a long established fact that a reader will be distracted by the readable content of a page when looking at its layout.',
+    status: 'default',
   },
   {
     title: 'Check Stock Market',
@@ -42,10 +45,15 @@ const data: TaskData = [
     tag: 'finance',
     des:
       "There are many variations of passages of Lorem Ipsum available, but the majority have suffered alteration in some form, by injected humour, or randomised words which don't look even slightly believable.",
+    status: 'default',
   },
 ]
 
 const TaskTimeline: React.FC<TaskTimelineProps> = ({ filterValue }) => {
+  const [actionStatus, setActionStatus] = useState('default')
+  const handleSelectStatus = (status: string): void => {
+    setActionStatus(status)
+  }
   const RenderTimeline = (items: TaskData): React.ReactNode => {
     return items.map((item, index: number) => (
       <Timeline.Item
@@ -56,7 +64,11 @@ const TaskTimeline: React.FC<TaskTimelineProps> = ({ filterValue }) => {
         key={`task-timeline-${index}`}
       >
         <div className="task-timeline-card">
-          <div className="task-timeline-card-content">
+          <div
+            className={clsx('task-timeline-card-content', {
+              // 'line-through': actionStatus === 'check',
+            })}
+          >
             <h3>{item.title}</h3>
             <p>{item.des}</p>
             <a href="/planner" className="text-info">
@@ -64,7 +76,7 @@ const TaskTimeline: React.FC<TaskTimelineProps> = ({ filterValue }) => {
               {item.location}
             </a>
           </div>
-          <TaskAction />
+          <TaskAction status={actionStatus} onSelectStatus={handleSelectStatus} />
         </div>
       </Timeline.Item>
     ))

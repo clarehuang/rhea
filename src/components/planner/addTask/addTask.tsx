@@ -40,6 +40,9 @@ const AddTask: React.FC<AddTaskProps> = ({ selectedTagColor = Tags['home'][1], o
     des: {
       rules: [{ required: false }],
     },
+    status: {
+      rules: [{ required: false }],
+    },
   }
 
   const handleReset = (): void => {
@@ -55,6 +58,7 @@ const AddTask: React.FC<AddTaskProps> = ({ selectedTagColor = Tags['home'][1], o
       range: fieldsValue['range'],
       tag: fieldsValue['tag'],
       des: fieldsValue['des'],
+      status: 'default',
     }
     formRef?.current.resetFields()
     onOpen?.(false)
@@ -108,7 +112,6 @@ const AddTask: React.FC<AddTaskProps> = ({ selectedTagColor = Tags['home'][1], o
           showTime={{ format: 'HH:mm' }}
           format="YYYY-MM-DD HH:mm"
           style={{ marginRight: 0 }}
-          use12Hours={true}
         />
       </Form.Item>
       <Form.Item name="des" {...config.des}>

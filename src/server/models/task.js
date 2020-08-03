@@ -20,6 +20,9 @@ const TaskSchema = new Schema({
   des: {
     type: String,
   },
+  status: {
+    type: String,
+  },
 })
 
 module.exports = mongoose.model('Task', TaskSchema)
