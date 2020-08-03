@@ -50,10 +50,6 @@ const data: TaskData = [
 ]
 
 const TaskTimeline: React.FC<TaskTimelineProps> = ({ filterValue }) => {
-  const [actionStatus, setActionStatus] = useState('default')
-  const handleSelectStatus = (status: string): void => {
-    setActionStatus(status)
-  }
   const RenderTimeline = (items: TaskData): React.ReactNode => {
     return items.map((item, index: number) => (
       <Timeline.Item
@@ -76,7 +72,7 @@ const TaskTimeline: React.FC<TaskTimelineProps> = ({ filterValue }) => {
               {item.location}
             </a>
           </div>
-          <TaskAction status={actionStatus} onSelectStatus={handleSelectStatus} />
+          <TaskAction status={item.status} />
         </div>
       </Timeline.Item>
     ))

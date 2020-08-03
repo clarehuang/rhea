@@ -12,7 +12,6 @@ import clsx from 'clsx'
 interface TaskActionProps {
   status?: string
   onSelectStatus?: (status: string) => void
-  children?: React.ReactNode
 }
 
 const TaskAction: React.FC<TaskActionProps> = ({ status, ...props }) => {
