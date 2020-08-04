@@ -3,6 +3,10 @@ const Schema = mongoose.Schema
 
 // Data modeling
 const TaskSchema = new Schema({
+  // userId: {
+  //   type: String,
+  //   required: true,
+  // },
   title: {
     type: String,
     required: true,
@@ -19,6 +23,7 @@ const TaskSchema = new Schema({
   },
   des: {
     type: String,
+    required: false,
   },
   status: {
     type: String,

@@ -9,7 +9,7 @@ export type TaskData = Array<Task>
 export type Task = {
   title: string
   location: string
-  range: Array<object>
+  range: Array<string>
   tag: string
   des: string
   status: string

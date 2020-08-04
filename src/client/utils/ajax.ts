@@ -28,7 +28,7 @@ const ajax = ({
 
   xhr.onload = () => {
     const { status, responseText } = xhr
-    let responseObj
+    let responseObj: any
     if (dataType === 'json') {
       responseObj = JSON.parse(responseText)
     }

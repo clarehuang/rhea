@@ -54,16 +54,22 @@ const AddTask: React.FC<AddTaskProps> = ({ selectedTagColor = Tags['home'][1], o
     const values = {
       ...fieldsValue,
       title: fieldsValue['title'],
-      location: fieldsValue['location'],
+      location:
+        typeof fieldsValue['location'] === 'undefined'
+          ? 'No location specified.'
+          : fieldsValue['location'],
       range: fieldsValue['range'],
       tag: fieldsValue['tag'],
-      des: fieldsValue['des'],
+      des:
+        typeof fieldsValue['des'] === 'undefined'
+          ? 'Add description through edit.'
+          : fieldsValue['des'],
       status: 'default',
     }
     formRef?.current.resetFields()
     onOpen?.(false)
     ajax({
-      url: '/api/task/planner',
+      url: '/api/task',
       method: 'POST',
       data: values,
       success(res, status) {
@@ -112,6 +118,7 @@ const AddTask: React.FC<AddTaskProps> = ({ selectedTagColor = Tags['home'][1], o
           showTime={{ format: 'HH:mm' }}
           format="YYYY-MM-DD HH:mm"
           style={{ marginRight: 0 }}
+          minuteStep={5}
         />
       </Form.Item>
       <Form.Item name="des" {...config.des}>

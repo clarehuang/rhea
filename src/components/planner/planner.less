@@ -145,7 +145,12 @@
     border-color:transparent;
   }
   .ant-timeline-item .ant-timeline-item-label{
-    width: 5.625rem;
+    width: 8.625rem;
+    @media @desktop-lg{
+      font-size: 0.825rem;
+      width: 6rem;
+      text-align: left;
+    }
     @media only screen and (max-width: 768px){
       font-size: 0.75rem;
       width: 5rem;
@@ -154,13 +159,22 @@
   }
   .ant-timeline-item .ant-timeline-item-tail,
   .ant-timeline-item .ant-timeline-item-head.ant-timeline-item-head-blue{
-    left: 7.5rem;
+    left: 10rem;
+    @media @desktop-lg{
+      left: 5.5rem;
+    }
     @media only screen and (max-width: 768px){
       left: 5.5rem;
     }
   }
   .ant-timeline-item .ant-timeline-item-content{
-    left: 7.5rem !important;
+    left: 9rem !important;
+    @media @desktop-lg{
+      left: 4.75rem !important;
+      p{
+        font-size: 0.825rem;
+      }
+    }
     @media only screen and (max-width: 768px){
       left: 4.5rem !important;
       width: calc(60% - 1rem);
