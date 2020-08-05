@@ -22,4 +22,15 @@ router.get('/', (req, res, next) => {
   })
 })
 
+router.patch('/', (req, res, next) => {
+  console.log('check request', req.body._id, 'check status', req.body)
+  Task.updateOne({ _id: req.body._id }, { status: 'check' }, (err, data) => {
+    if (err) {
+      return res.status(400).send(data).end()
+    }
+
+    res.status(200).send(data).end()
+  })
+})
+
 module.exports = router

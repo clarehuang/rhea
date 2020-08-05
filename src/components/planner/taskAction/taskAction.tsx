@@ -6,8 +6,11 @@ import {
   CheckOutlined,
   CloseOutlined,
   UndoOutlined,
+  CheckCircleOutlined,
+  CloseCircleOutlined,
 } from '@ant-design/icons'
 import clsx from 'clsx'
+import ajax from '../../../client/utils/ajax'
 
 interface TaskActionProps {
   status?: string
@@ -33,17 +36,66 @@ const TaskAction: React.FC<TaskActionProps> = ({ status, ...props }) => {
       }
       // edit
       if (previousStatus === 'edit' && value === 'confirm') {
-        console.log('Save edits')
+        const elem = e.target as HTMLButtonElement
+        const task = elem.closest('.ant-timeline-item')
+        console.log('Save edits', task.id)
+        ajax({
+          url: '/api/task',
+          method: 'PATCH',
+          data: { _id: task.id },
+          success(res, status) {
+            console.log('res type is', res)
+          },
+          fail(res, status) {
+            //TODO : finish fail action, indluding error handling
+            console.log(status, res)
+            console.log('post task fails')
+          },
+        })
       }
 
       // line through card content
       if (value !== 'default' && value === 'check') {
         const sibling = e.currentTarget.parentElement.previousElementSibling
         sibling.style.textDecoration = 'line-through'
+
+        const elem = e.target as HTMLButtonElement
+        const task = elem.closest('.ant-timeline-item')
+        console.log('Save edits', task.id)
+        ajax({
+          url: '/api/task',
+          method: 'PATCH',
+          data: { _id: task.id, status: task.status },
+          success(res, status) {
+            console.log('res type is', res)
+          },
+          fail(res, status) {
+            //TODO : finish fail action, indluding error handling
+            console.log(status, res)
+            console.log('post task fails')
+          },
+        })
       }
       if (value !== 'default' && value === 'undo') {
         const sibling = e.currentTarget.parentElement.previousElementSibling
         sibling.style.textDecoration = 'none'
+
+        const elem = e.target as HTMLButtonElement
+        const task = elem.closest('.ant-timeline-item')
+        console.log('Save edits', task.id)
+        ajax({
+          url: '/api/task',
+          method: 'PATCH',
+          data: { _id: task.id, status: task.status },
+          success(res, status) {
+            console.log('res type is', res)
+          },
+          fail(res, status) {
+            //TODO : finish fail action, indluding error handling
+            console.log(status, res)
+            console.log('post task fails')
+          },
+        })
       }
     }
   }
@@ -98,7 +150,7 @@ const TaskAction: React.FC<TaskActionProps> = ({ status, ...props }) => {
       />
       <Button
         shape="circle"
-        icon={<CloseOutlined />}
+        icon={<CloseCircleOutlined />}
         size="large"
         value="default"
         className={clsx('task-timeline-action-delete text-danger', {
@@ -109,7 +161,7 @@ const TaskAction: React.FC<TaskActionProps> = ({ status, ...props }) => {
       />
       <Button
         shape="circle"
-        icon={<CheckOutlined />}
+        icon={<CheckCircleOutlined />}
         size="large"
         value="confirm"
         className={clsx('task-timeline-action-check text-success', {

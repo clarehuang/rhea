@@ -5,7 +5,7 @@ import { Tags, TaskAction } from '../index'
 import { TaskData } from '../../type'
 import clsx from 'clsx'
 import ajax from '../../../client/utils/ajax'
-import { localTimezone } from '../../utils'
+import { localTimezone } from '../../../client/utils'
 import moment from 'moment'
 
 interface TaskTimelineProps {
@@ -32,6 +32,8 @@ const RenderTimeline = (items: TaskData, filterTagValue: string): React.ReactNod
         hidden: filterTagValue !== 'all' && filterTagValue !== item.tag,
       })}
       key={`task-timeline-${index}`}
+      id={item._id}
+      status={item.status}
     >
       <div className="task-timeline-card">
         <div className={clsx('task-timeline-card-content')}>

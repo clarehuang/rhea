@@ -7,6 +7,7 @@ export type TagData = {
 export type TaskData = Array<Task>
 
 export type Task = {
+  _id?: string
   title: string
   location: string
   range: Array<string>
