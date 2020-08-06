@@ -54,39 +54,19 @@ const TaskAction: React.FC<TaskActionProps> = ({ status, ...props }) => {
         })
       }
 
-      // line through card content
-      if (value !== 'default' && value === 'check') {
+      if ((value !== 'default' && value === 'check') || (value !== 'default' && value === 'undo')) {
         const sibling = e.currentTarget.parentElement.previousElementSibling
-        sibling.style.textDecoration = 'line-through'
+        sibling.style.textDecoration = value === 'check' ? 'line-through' : 'none'
 
         const elem = e.target as HTMLButtonElement
         const task = elem.closest('.ant-timeline-item')
-        console.log('Save edits', task.id)
-        ajax({
-          url: '/api/task',
-          method: 'PATCH',
-          data: { _id: task.id, status: task.status },
-          success(res, status) {
-            console.log('res type is', res)
-          },
-          fail(res, status) {
-            //TODO : finish fail action, indluding error handling
-            console.log(status, res)
-            console.log('post task fails')
-          },
-        })
-      }
-      if (value !== 'default' && value === 'undo') {
-        const sibling = e.currentTarget.parentElement.previousElementSibling
-        sibling.style.textDecoration = 'none'
+        const currentStatusValue = task.getAttribute('data-status')
+        task.setAttribute('data-status', currentStatusValue === 'default' ? 'check' : 'default')
 
-        const elem = e.target as HTMLButtonElement
-        const task = elem.closest('.ant-timeline-item')
-        console.log('Save edits', task.id)
         ajax({
           url: '/api/task',
           method: 'PATCH',
-          data: { _id: task.id, status: task.status },
+          data: { _id: task.id, status: currentStatus },
           success(res, status) {
             console.log('res type is', res)
           },

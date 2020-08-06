@@ -22,7 +22,6 @@ const RenderTimeline = (items: TaskData, filterTagValue: string): React.ReactNod
       parseInt(moment(localTimezone(b.range[0])).format('X'))
     )
   })
-
   return items.map((item, index: number) => (
     <Timeline.Item
       label={`${moment(localTimezone(item.range[0])).format('hh:mm a')} - ${moment(
@@ -33,15 +32,20 @@ const RenderTimeline = (items: TaskData, filterTagValue: string): React.ReactNod
       })}
       key={`task-timeline-${index}`}
       id={item._id}
-      status={item.status}
+      data-status={item.status}
     >
       <div className="task-timeline-card">
-        <div className={clsx('task-timeline-card-content')}>
+        <div
+          className={clsx('task-timeline-card-content', {
+            'line-through': item.status === 'check',
+          })}
+        >
           <h3>{item.title}</h3>
           <p>{item.des}</p>
           <a href="/planner" className="text-info">
             <EnvironmentOutlined style={{ marginRight: '0.5rem' }} />
             {item.location}
+            {item.status}
           </a>
         </div>
         <TaskAction status={item.status} />
