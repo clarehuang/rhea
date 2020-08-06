@@ -33,6 +33,24 @@ const TaskAction: React.FC<TaskActionProps> = ({ status, ...props }) => {
       // delete
       if (previousStatus === 'delete' && value === 'confirm') {
         console.log('Delete this task')
+        const elem = e.target as HTMLButtonElement
+        const task = elem.closest('.ant-timeline-item')
+        const id = task.id
+        task.remove()
+
+        ajax({
+          url: '/api/task',
+          method: 'DELETE',
+          data: { _id: id },
+          success(res, status) {
+            console.log('res type is', res)
+          },
+          fail(res, status) {
+            //TODO : finish fail action, indluding error handling
+            console.log(status, res)
+            console.log('post task fails')
+          },
+        })
       }
       // edit
       if (previousStatus === 'edit' && value === 'confirm') {

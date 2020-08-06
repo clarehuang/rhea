@@ -37,4 +37,14 @@ router.patch('/', (req, res, next) => {
   )
 })
 
+router.delete('/', (req, res, next) => {
+  Task.deleteOne({ _id: req.body._id }, (err, data) => {
+    if (err) {
+      return res.status(400).send(data).end()
+    }
+
+    res.status(200).send(data).end()
+  })
+})
+
 module.exports = router
