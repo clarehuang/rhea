@@ -4,6 +4,7 @@ import { useSelector, useDispatch } from 'react-redux'
 import { FormInstance } from 'antd/lib/form'
 import { Store } from 'antd/lib/form/interface'
 import { Tags } from '../index'
+import { Task } from '../../type'
 import ajax from '../../../client/utils/ajax'
 
 const { RangePicker } = DatePicker
@@ -78,7 +79,12 @@ const AddTask: React.FC<AddTaskProps> = ({ selectedTagColor = Tags['home'][1], o
       success(res, status) {
         //TODO : finish success action, indluding redirect to home page
         console.log(status, res)
-        console.log('post task sucess')
+        console.log('post task sucess', res)
+        const obj = res as Task
+        dispatch({
+          type: 'TASK_ADD',
+          task: { ...values, _id: obj._id, __v: obj.__v },
+        })
       },
       fail(res, status) {
         //TODO : finish fail action, indluding error handling
@@ -87,11 +93,6 @@ const AddTask: React.FC<AddTaskProps> = ({ selectedTagColor = Tags['home'][1], o
       },
     })
     setTagColorPicked(Tags[formRef?.current.getFieldsValue().tag][1])
-    console.log(values)
-    dispatch({
-      type: 'TASK_ADD',
-      tasks: values,
-    })
   }
   const handleFinishFailed = (errorInfo: object) => {
     console.log('Failed:', errorInfo)

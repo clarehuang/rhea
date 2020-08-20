@@ -5,11 +5,11 @@ const router = express.Router()
 router.post('/', function (req, res) {
   const task = new Task(req.body)
   console.log(task)
-  task.save(function (err) {
+  task.save(function (err, data) {
     if (err) {
       console.log(err)
     }
-    // saved!
+    res.status(200).send(data).end()
   })
 })
 

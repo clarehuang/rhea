@@ -8,6 +8,7 @@ export type TaskData = Array<Task>
 
 export type Task = {
   _id?: string
+  __v?: number
   title: string
   location: string
   range: Array<string>

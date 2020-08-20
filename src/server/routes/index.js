@@ -4,6 +4,7 @@ const router = express.Router()
 const { StaticRouter } = require('react-router')
 const { renderToString } = require('react-dom/server')
 const { Helmet } = require('react-helmet')
+const { createStore } = require('redux')
 const App = require('../../../dist/server/app').default
 const template = require('../template')
 const assets = require('../../../dist/server/assets.json')
@@ -18,6 +19,7 @@ router.get('/*', (req, res, next) => {
   const context = {
     userAgent: req.headers['user-agent'],
   }
+  const store = createStore(() => ({ tasks: [] }), { tasks: [] })
   const appString = renderToString(
     createElement(App, {
       Router: StaticRouter,
@@ -26,6 +28,7 @@ router.get('/*', (req, res, next) => {
         location: req.originalUrl,
       },
       langData,
+      store,
       initialLang: req.locale.toString(),
       fallbackLang,
       availableLang,
