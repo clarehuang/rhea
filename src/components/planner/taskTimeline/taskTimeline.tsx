@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react'
 import { Timeline } from 'antd'
 import { EnvironmentOutlined, LoadingOutlined } from '@ant-design/icons'
+import { useSelector, useDispatch } from 'react-redux'
 import { Tags, TaskAction } from '../index'
 import { TaskData } from '../../type'
 import clsx from 'clsx'
@@ -12,61 +13,82 @@ interface TaskTimelineProps {
   filterValue: string
   children?: React.ReactNode
 }
-const RenderTimeline = (items: TaskData, filterTagValue: string): React.ReactNode => {
-  items.sort(function (a, b) {
-    console.log('moment format - month', moment(localTimezone(a.range[0])).format('MMM'))
-    console.log('moment format - date', moment(localTimezone(a.range[0])).format('DD'))
-    console.log('moment format - year', moment(localTimezone(a.range[0])).format('YYYY'))
-    return (
-      parseInt(moment(localTimezone(a.range[0])).format('X')) -
-      parseInt(moment(localTimezone(b.range[0])).format('X'))
-    )
-  })
-  return items.map((item, index: number) => (
-    <Timeline.Item
-      label={`${moment(localTimezone(item.range[0])).format('hh:mm a')} - ${moment(
-        localTimezone(item.range[1])
-      ).format('hh:mm a')}`}
-      className={clsx(`task-${item.tag}`, {
-        hidden: filterTagValue !== 'all' && filterTagValue !== item.tag,
-      })}
-      key={`task-timeline-${index}`}
-      id={item._id}
-      data-status={item.status}
-    >
-      <div className="task-timeline-card">
-        <div
-          className={clsx('task-timeline-card-content', {
-            'line-through': item.status === 'check',
-          })}
-        >
-          <h3>{item.title}</h3>
-          <p>{item.des}</p>
-          <a href="/planner" className="text-info">
-            <EnvironmentOutlined style={{ marginRight: '0.5rem' }} />
-            {item.location}
-            {item.status}
-          </a>
-        </div>
-        <TaskAction status={item.status} />
-      </div>
-    </Timeline.Item>
-  ))
-}
 
 const TaskTimeline: React.FC<TaskTimelineProps> = ({ filterValue }) => {
+  const state = useSelector((state) => state)
+  const dispatch = useDispatch()
   const [isLoading, setLoading] = useState(false)
   const [tasks, setTasks] = useState([])
+  const [actionState, setActionState] = useState('')
+  const RenderTimeline = (items: TaskData, filterTagValue: string): React.ReactNode => {
+    items.sort(function (a, b) {
+      // console.log('moment format - month', moment(localTimezone(a.range[0])).format('MMM'))
+      // console.log('moment format - date', moment(localTimezone(a.range[0])).format('DD'))
+      // console.log('moment format - year', moment(localTimezone(a.range[0])).format('YYYY'))
+      return (
+        parseInt(moment(localTimezone(a.range[0])).format('X')) -
+        parseInt(moment(localTimezone(b.range[0])).format('X'))
+      )
+    })
+
+    return items.map((item, index: number) => (
+      <Timeline.Item
+        label={`${moment(localTimezone(item.range[0])).format('hh:mm a')} - ${moment(
+          localTimezone(item.range[1])
+        ).format('hh:mm a')}`}
+        className={clsx(`task-${item.tag}`, {
+          hidden: filterTagValue !== 'all' && filterTagValue !== item.tag,
+        })}
+        key={`task-timeline-${index}`}
+        id={item._id}
+        data-status={item.status}
+      >
+        <div className="task-timeline-card">
+          <div
+            className={clsx('task-timeline-card-content', {
+              'line-through': item.status === 'check',
+            })}
+          >
+            <h3>{item.title}</h3>
+            <p>{item.des}</p>
+            <a href="/planner" className="text-info">
+              <EnvironmentOutlined style={{ marginRight: '0.5rem' }} />
+              {item.location}
+            </a>
+          </div>
+          <form className="task-timeline-edit-form" style={{ display: 'none' }}>
+            123
+          </form>
+          <TaskAction
+            status={item.status}
+            onSelectStatus={(value, e) => {
+              console.log(value)
+              const elem = e.target as HTMLButtonElement
+              const elemCard = elem.closest('.task-timeline-card')
+
+              elemCard.querySelector('.task-timeline-card-content').style.display =
+                value === 'edit' ? 'none' : 'block'
+              elemCard.querySelector('.task-timeline-edit-form').style.display =
+                value === 'edit' ? 'block' : 'none'
+
+              setActionState(value)
+            }}
+          />
+        </div>
+      </Timeline.Item>
+    ))
+  }
   useEffect(() => {
     setLoading(true)
     ajax({
       url: '/api/task',
       method: 'GET',
       data: {},
-      success(res, status) {
+      success(res: object, status) {
         setLoading(false)
+        const tasks = res as Array<object>
         console.log('res type is', typeof res, 'res is ', res)
-        setTasks(res)
+        setTasks(tasks)
         for (let i = 0; i < Object.keys(Tags).length; i++) {
           const key = Object.keys(Tags)[i]
           const list = document.querySelectorAll(
@@ -74,6 +96,7 @@ const TaskTimeline: React.FC<TaskTimelineProps> = ({ filterValue }) => {
           )
           list.forEach((item) => (item.style.backgroundColor = Tags[key][1]))
         }
+        dispatch({ type: 'TASK_GET', tasks })
       },
       fail(res, status) {
         //TODO : finish fail action, indluding error handling
@@ -81,6 +104,7 @@ const TaskTimeline: React.FC<TaskTimelineProps> = ({ filterValue }) => {
         console.log('post task fails')
       },
     })
+    console.log(state)
   }, [])
   if (isLoading) {
     return (

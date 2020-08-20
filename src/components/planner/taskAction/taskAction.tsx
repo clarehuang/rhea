@@ -4,7 +4,6 @@ import {
   DeleteOutlined,
   EditOutlined,
   CheckOutlined,
-  CloseOutlined,
   UndoOutlined,
   CheckCircleOutlined,
   CloseCircleOutlined,
@@ -14,7 +13,7 @@ import ajax from '../../../client/utils/ajax'
 
 interface TaskActionProps {
   status?: string
-  onSelectStatus?: (status: string) => void
+  onSelectStatus?: (status: string, e: React.MouseEvent | React.KeyboardEvent) => void
 }
 
 const TaskAction: React.FC<TaskActionProps> = ({ status, ...props }) => {
@@ -22,13 +21,14 @@ const TaskAction: React.FC<TaskActionProps> = ({ status, ...props }) => {
   let previousStatus = ''
   const handleClick = (e: React.MouseEvent | React.KeyboardEvent): void => {
     previousStatus = currentStatus
-    const value = e.currentTarget.value
+    const elem = e.currentTarget as HTMLButtonElement
+    const value = elem.value
     if (
       e.nativeEvent instanceof MouseEvent ||
       (e.nativeEvent instanceof KeyboardEvent && e.nativeEvent.keyCode === 32)
     ) {
       value === 'confirm' ? setStatus('default') : setStatus(value)
-      props.onSelectStatus?.(value)
+      props.onSelectStatus?.(value, e)
 
       // delete
       if (previousStatus === 'delete' && value === 'confirm') {
@@ -73,7 +73,7 @@ const TaskAction: React.FC<TaskActionProps> = ({ status, ...props }) => {
       }
 
       if ((value !== 'default' && value === 'check') || (value !== 'default' && value === 'undo')) {
-        const sibling = e.currentTarget.parentElement.previousElementSibling
+        const sibling = e.currentTarget.parentElement.previousElementSibling as HTMLElement
         sibling.style.textDecoration = value === 'check' ? 'line-through' : 'none'
 
         const elem = e.target as HTMLButtonElement

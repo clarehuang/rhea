@@ -1,5 +1,6 @@
 import React, { useEffect, useState, useRef } from 'react'
 import { Form, Input, Button, Row, Select, DatePicker } from 'antd'
+import { useSelector, useDispatch } from 'react-redux'
 import { FormInstance } from 'antd/lib/form'
 import { Store } from 'antd/lib/form/interface'
 import { Tags } from '../index'
@@ -17,6 +18,8 @@ interface AddTaskProps {
 const { Option } = Select
 const { TextArea } = Input
 const AddTask: React.FC<AddTaskProps> = ({ selectedTagColor = Tags['home'][1], onOpen }) => {
+  const dispatch = useDispatch()
+
   const formRef: React.Ref<FormInstance> = useRef(null)
   const [tagColorPicked, setTagColorPicked] = useState(selectedTagColor)
   useEffect(() => {
@@ -85,6 +88,10 @@ const AddTask: React.FC<AddTaskProps> = ({ selectedTagColor = Tags['home'][1], o
     })
     setTagColorPicked(Tags[formRef?.current.getFieldsValue().tag][1])
     console.log(values)
+    dispatch({
+      type: 'TASK_ADD',
+      tasks: values,
+    })
   }
   const handleFinishFailed = (errorInfo: object) => {
     console.log('Failed:', errorInfo)
