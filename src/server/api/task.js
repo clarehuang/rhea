@@ -4,7 +4,6 @@ const router = express.Router()
 
 router.post('/', function (req, res) {
   const task = new Task(req.body)
-  console.log(task)
   task.save(function (err, data) {
     if (err) {
       console.log(err)
@@ -31,7 +30,6 @@ router.patch('/', (req, res, next) => {
       if (err) {
         return res.status(400).send(data).end()
       }
-
       res.status(200).send(data).end()
     }
   )
@@ -42,7 +40,6 @@ router.delete('/', (req, res, next) => {
     if (err) {
       return res.status(400).send(data).end()
     }
-
     res.status(200).send(data).end()
   })
 })

@@ -30,7 +30,6 @@ const TaskTimeline: React.FC<TaskTimelineProps> = ({ filterValue }) => {
         })}
         key={`task-timeline-${index}`}
         id={item._id}
-        data-status={item.status}
       >
         <div className="task-timeline-card">
           <div
@@ -77,13 +76,15 @@ const TaskTimeline: React.FC<TaskTimelineProps> = ({ filterValue }) => {
         setLoading(false)
         const tasks = res as Array<object>
         dispatch({ type: 'TASK_GET', allTasks: tasks })
-        for (let i = 0; i < Object.keys(Tags).length; i++) {
-          const key = Object.keys(Tags)[i]
-          const list = document.querySelectorAll(
-            `.task-${key} .ant-timeline-item-head.ant-timeline-item-head-blue`
-          )
-          list.forEach((item) => (item.style.backgroundColor = Tags[key][1]))
-        }
+
+        // TODO: add new tag color
+        // for (let i = 0; i < Object.keys(Tags).length; i++) {
+        //   const key = Object.keys(Tags)[i]
+        //   const list = document.querySelectorAll(
+        //     `.task-${key} .ant-timeline-item-head.ant-timeline-item-head-blue`
+        //   )
+        //   list.forEach((item) => (item.style.backgroundColor = Tags[key][1]))
+        // }
       },
       fail(res, status) {
         //TODO : finish fail action, indluding error handling

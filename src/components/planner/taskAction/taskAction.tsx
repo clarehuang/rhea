@@ -8,17 +8,21 @@ import {
   CheckCircleOutlined,
   CloseCircleOutlined,
 } from '@ant-design/icons'
+import { useDispatch } from 'react-redux'
 import clsx from 'clsx'
 import ajax from '../../../client/utils/ajax'
 
 interface TaskActionProps {
+  // passed down from the outside component which is TaskTimeline
   status?: string
   onSelectStatus?: (status: string, e: React.MouseEvent | React.KeyboardEvent) => void
 }
 
 const TaskAction: React.FC<TaskActionProps> = ({ status, ...props }) => {
+  const dispatch = useDispatch()
   const [currentStatus, setStatus] = useState(status ? status : 'default')
   let previousStatus = ''
+
   const handleClick = (e: React.MouseEvent | React.KeyboardEvent): void => {
     previousStatus = currentStatus
     const elem = e.currentTarget as HTMLButtonElement
@@ -32,7 +36,6 @@ const TaskAction: React.FC<TaskActionProps> = ({ status, ...props }) => {
 
       // delete
       if (previousStatus === 'delete' && value === 'confirm') {
-        console.log('Delete this task')
         const elem = e.target as HTMLButtonElement
         const task = elem.closest('.ant-timeline-item')
         const id = task.id
@@ -78,15 +81,13 @@ const TaskAction: React.FC<TaskActionProps> = ({ status, ...props }) => {
 
         const elem = e.target as HTMLButtonElement
         const task = elem.closest('.ant-timeline-item')
-        const currentStatusValue = task.getAttribute('data-status')
-        task.setAttribute('data-status', currentStatusValue === 'default' ? 'check' : 'default')
 
         ajax({
           url: '/api/task',
           method: 'PATCH',
           data: { _id: task.id, status: currentStatus },
           success(res, status) {
-            console.log('res type is', res)
+            dispatch({ type: 'TASK_CHECK', checkedID: task.id })
           },
           fail(res, status) {
             //TODO : finish fail action, indluding error handling
