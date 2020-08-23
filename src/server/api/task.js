@@ -20,19 +20,16 @@ router.get('/', (req, res, next) => {
     res.status(200).send(data).end()
   })
 })
-
+//CHECK
 router.patch('/', (req, res, next) => {
   console.log('check request', req.body._id, 'check status', req.body.status)
-  Task.updateOne(
-    { _id: req.body._id },
-    { status: `${req.body.status === 'check' ? 'default' : 'check'}` },
-    (err, data) => {
-      if (err) {
-        return res.status(400).send(data).end()
-      }
-      res.status(200).send(data).end()
+
+  Task.updateOne({ _id: req.body._id }, req.body, (err, data) => {
+    if (err) {
+      return res.status(400).send(data).end()
     }
-  )
+    res.status(200).send(data).end()
+  })
 })
 
 router.delete('/', (req, res, next) => {

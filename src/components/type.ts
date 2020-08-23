@@ -14,5 +14,5 @@ export type Task = {
   range: Array<string>
   tag: string
   des: string
-  status: string
+  status?: string
 }

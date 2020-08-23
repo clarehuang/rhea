@@ -15,10 +15,11 @@ import ajax from '../../../client/utils/ajax'
 interface TaskActionProps {
   // passed down from the outside component which is TaskTimeline
   status?: string
+  itemId?: string
   onSelectStatus?: (status: string, e: React.MouseEvent | React.KeyboardEvent) => void
 }
 
-const TaskAction: React.FC<TaskActionProps> = ({ status, ...props }) => {
+const TaskAction: React.FC<TaskActionProps> = ({ status, itemId, ...props }) => {
   const dispatch = useDispatch()
   const [currentStatus, setStatus] = useState(status ? status : 'default')
   let previousStatus = ''
@@ -34,36 +35,30 @@ const TaskAction: React.FC<TaskActionProps> = ({ status, ...props }) => {
       value === 'confirm' ? setStatus('default') : setStatus(value)
       props.onSelectStatus?.(value, e)
 
-      // delete
+      // TASK ACTION: DELETE
       if (previousStatus === 'delete' && value === 'confirm') {
-        const elem = e.target as HTMLButtonElement
-        const task = elem.closest('.ant-timeline-item')
-        const id = task.id
-        task.remove()
-
+        document.getElementById(itemId).remove()
         ajax({
           url: '/api/task',
           method: 'DELETE',
-          data: { _id: id },
+          data: { _id: itemId },
           success(res, status) {
             console.log('res type is', res)
           },
           fail(res, status) {
             //TODO : finish fail action, indluding error handling
-            console.log(status, res)
+            console.log(res)
             console.log('post task fails')
           },
         })
       }
-      // edit
+      // TASK ACTION: EDIT
       if (previousStatus === 'edit' && value === 'confirm') {
-        const elem = e.target as HTMLButtonElement
-        const task = elem.closest('.ant-timeline-item')
-        console.log('Save edits', task.id)
+        console.log('Save edits', itemId)
         ajax({
           url: '/api/task',
           method: 'PATCH',
-          data: { _id: task.id },
+          data: { _id: itemId },
           success(res, status) {
             console.log('res type is', res)
           },
@@ -74,20 +69,14 @@ const TaskAction: React.FC<TaskActionProps> = ({ status, ...props }) => {
           },
         })
       }
-
-      if ((value !== 'default' && value === 'check') || (value !== 'default' && value === 'undo')) {
-        const sibling = e.currentTarget.parentElement.previousElementSibling as HTMLElement
-        sibling.style.textDecoration = value === 'check' ? 'line-through' : 'none'
-
-        const elem = e.target as HTMLButtonElement
-        const task = elem.closest('.ant-timeline-item')
-
+      // TASK ACTION: CHECK
+      if (value === 'check' || value === 'undo') {
         ajax({
           url: '/api/task',
           method: 'PATCH',
-          data: { _id: task.id, status: currentStatus },
+          data: { _id: itemId, status: `${currentStatus === 'check' ? 'default' : 'check'}` },
           success(res, status) {
-            dispatch({ type: 'TASK_CHECK', checkedID: task.id })
+            dispatch({ type: 'TASK_CHECK', checkedID: itemId })
           },
           fail(res, status) {
             //TODO : finish fail action, indluding error handling
@@ -131,9 +120,7 @@ const TaskAction: React.FC<TaskActionProps> = ({ status, ...props }) => {
         value="check"
         className={clsx('task-timeline-action-check text-success', {
           hidden:
-            (currentStatus !== 'default' && currentStatus === 'check') ||
-            (currentStatus !== 'default' && currentStatus === 'delete') ||
-            (currentStatus !== 'default' && currentStatus === 'edit'),
+            currentStatus === 'check' || currentStatus === 'delete' || currentStatus === 'edit',
         })}
         onClick={handleClick}
       />

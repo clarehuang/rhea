@@ -2,8 +2,9 @@ import React, { useState, useEffect } from 'react'
 import { Timeline } from 'antd'
 import { EnvironmentOutlined, LoadingOutlined } from '@ant-design/icons'
 import { useSelector, useDispatch } from 'react-redux'
-import { Tags, TaskAction } from '../index'
+import { TaskAction } from '../index'
 import { TaskData } from '../../type'
+import EditTask from '../editTask/editTask'
 import clsx from 'clsx'
 import ajax from '../../../client/utils/ajax'
 import { localTimezone } from '../../../client/utils'
@@ -33,7 +34,7 @@ const TaskTimeline: React.FC<TaskTimelineProps> = ({ filterValue }) => {
       >
         <div className="task-timeline-card">
           <div
-            className={clsx('task-timeline-card-content', {
+            className={clsx(`task-timeline-card-content task-content--${item._id}`, {
               'line-through': item.status === 'check',
             })}
           >
@@ -44,19 +45,20 @@ const TaskTimeline: React.FC<TaskTimelineProps> = ({ filterValue }) => {
               {item.location}
             </a>
           </div>
-          <form className="task-timeline-edit-form" style={{ display: 'none' }}>
-            123
-          </form>
+          <EditTask
+            className={clsx(`task-timeline-edit-form task-edit-form--${item._id}`)}
+            fieldsValue={item}
+            itemId={item._id}
+            onSetValue={(values) => console.log(values)}
+            style={{ display: 'none' }}
+          />
           <TaskAction
             status={item.status}
+            itemId={item._id}
             onSelectStatus={(value, e) => {
-              console.log(value)
-              const elem = e.target as HTMLButtonElement
-              const elemCard = elem.closest('.task-timeline-card')
-
-              elemCard.querySelector('.task-timeline-card-content').style.display =
+              document.querySelector(`.task-content--${item._id}`).style.display =
                 value === 'edit' ? 'none' : 'block'
-              elemCard.querySelector('.task-timeline-edit-form').style.display =
+              document.querySelector(`.task-edit-form--${item._id}`).style.display =
                 value === 'edit' ? 'block' : 'none'
 
               setActionState(value)

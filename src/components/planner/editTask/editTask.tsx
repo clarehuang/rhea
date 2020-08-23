@@ -1,31 +1,40 @@
 import React, { useEffect, useState, useRef, CSSProperties } from 'react'
 import { Form, Input, Button, Row, Select, DatePicker } from 'antd'
-import { useDispatch } from 'react-redux'
 import { FormInstance } from 'antd/lib/form'
 import { Store } from 'antd/lib/form/interface'
+import moment from 'moment'
+import clsx from 'clsx'
+import { localTimezone } from '../../../client/utils'
 import { Tags } from '../index'
 import { Task } from '../../type'
-import ajax from '../../../client/utils/ajax'
 
 const { RangePicker } = DatePicker
 
-interface AddTaskProps {
-  selectedTagColor?: string
+interface EditTaskProps {
+  className?: string
   id?: string
+  itemId?: string
   style?: CSSProperties
   visible?: boolean
-  onOpen?: (visible: boolean) => void
+  fieldsValue: Task
+  onSetValue?: (values: Task) => void
 }
 
 const { Option } = Select
 const { TextArea } = Input
-const AddTask: React.FC<AddTaskProps> = ({ selectedTagColor = Tags['home'][1], onOpen }) => {
-  const dispatch = useDispatch()
-
+const EditTask: React.FC<EditTaskProps> = ({ className, fieldsValue, style, itemId, ...props }) => {
+  console.log('fieldValue range[0] is ', typeof localTimezone(fieldsValue.range[0]))
+  props.onSetValue?.({
+    title: 'edit test',
+    location: 'edit test',
+    range: [],
+    tag: 'home',
+    des: 'This is an edit des.',
+  })
   const formRef: React.Ref<FormInstance> = useRef(null)
-  const [tagColorPicked, setTagColorPicked] = useState(selectedTagColor)
+  const [tagColorPicked, setTagColorPicked] = useState(Tags[fieldsValue.tag][1])
   useEffect(() => {
-    const elem = document.querySelector('.add-task-form') as HTMLElement
+    const elem = document.getElementById(`edit_task--${itemId}`) as HTMLElement
     elem.style.setProperty('--color-tag', tagColorPicked)
   }, [tagColorPicked])
 
@@ -50,11 +59,6 @@ const AddTask: React.FC<AddTaskProps> = ({ selectedTagColor = Tags['home'][1], o
     },
   }
 
-  const handleReset = (): void => {
-    formRef?.current.resetFields()
-    onOpen?.(false)
-    setTagColorPicked(Tags[formRef?.current.getFieldsValue().tag][1])
-  }
   const handleFinish = (fieldsValue: Store): void => {
     const values = {
       ...fieldsValue,
@@ -72,27 +76,8 @@ const AddTask: React.FC<AddTaskProps> = ({ selectedTagColor = Tags['home'][1], o
       status: 'default',
     }
     formRef?.current.resetFields()
-    onOpen?.(false)
-    ajax({
-      url: '/api/task',
-      method: 'POST',
-      data: values,
-      success(res, status) {
-        //TODO : finish success action, indluding redirect to home page
-        console.log(status, res)
-        console.log('post task sucess', res)
-        const obj = res as Task
-        dispatch({
-          type: 'TASK_ADD',
-          task: { ...values, _id: obj._id, __v: obj.__v },
-        })
-      },
-      fail(res, status) {
-        //TODO : finish fail action, indluding error handling
-        console.log(status, res)
-        console.log('post task fails')
-      },
-    })
+    console.log('onHandleFinish from edit status', values)
+
     setTagColorPicked(Tags[formRef?.current.getFieldsValue().tag][1])
   }
   const handleFinishFailed = (errorInfo: object) => {
@@ -103,16 +88,19 @@ const AddTask: React.FC<AddTaskProps> = ({ selectedTagColor = Tags['home'][1], o
     setTagColorPicked(Tags[value][1])
   }
 
+  console.log('test fields', formRef.current?.getFieldsValue())
   return (
     <Form
-      name="add_task"
-      className="add-task-form"
-      onFinish={handleFinish}
+      name={`edit_task--${itemId}`}
+      className={clsx(`add-task-form`, className)}
       onFinishFailed={handleFinishFailed}
-      style={{ paddingTop: '1rem' }}
+      style={Object.assign({ paddingTop: '1rem' }, style)}
       ref={formRef}
       initialValues={{
-        tag: 'home',
+        title: fieldsValue.title,
+        location: fieldsValue.location,
+        tag: fieldsValue.tag,
+        des: fieldsValue.des,
       }}
     >
       <Form.Item name="title" {...config.title}>
@@ -128,6 +116,10 @@ const AddTask: React.FC<AddTaskProps> = ({ selectedTagColor = Tags['home'][1], o
           format="YYYY-MM-DD HH:mm"
           style={{ marginRight: 0 }}
           minuteStep={5}
+          defaultValue={[
+            moment(localTimezone(fieldsValue.range[0])),
+            moment(localTimezone(fieldsValue.range[1])),
+          ]}
         />
       </Form.Item>
       <Form.Item name="des" {...config.des}>
@@ -145,21 +137,8 @@ const AddTask: React.FC<AddTaskProps> = ({ selectedTagColor = Tags['home'][1], o
           <Option value="other">Other</Option>
         </Select>
       </Form.Item>
-
-      <Row className="add-task-buttons">
-        <Form.Item>
-          <Button className="outline-button" onClick={handleReset}>
-            CANCEL
-          </Button>
-        </Form.Item>
-        <Form.Item>
-          <Button type="primary" htmlType="submit" className="primary-button">
-            SAVE
-          </Button>
-        </Form.Item>
-      </Row>
     </Form>
   )
 }
 
-export default AddTask
+export default EditTask
