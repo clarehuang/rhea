@@ -1,7 +1,7 @@
-import React, { useEffect, useState, useRef, CSSProperties } from 'react'
-import { Form, Input, Button, Row, Select, DatePicker } from 'antd'
+import React, { useEffect, useState, useRef } from 'react'
+import { Form, Input, Select, DatePicker } from 'antd'
 import { FormInstance } from 'antd/lib/form'
-import { Store } from 'antd/lib/form/interface'
+import { useDispatch } from 'react-redux'
 import moment from 'moment'
 import clsx from 'clsx'
 import { localTimezone } from '../../../client/utils'
@@ -14,30 +14,24 @@ interface EditTaskProps {
   className?: string
   id?: string
   itemId?: string
-  style?: CSSProperties
+  style?: React.CSSProperties
   visible?: boolean
   fieldsValue: Task
-  onSetValue?: (values: Task) => void
+  // dispatch formref
+  actionStatus?: string
 }
 
 const { Option } = Select
 const { TextArea } = Input
-const EditTask: React.FC<EditTaskProps> = ({ className, fieldsValue, style, itemId, ...props }) => {
-  console.log('fieldValue range[0] is ', typeof localTimezone(fieldsValue.range[0]))
-  props.onSetValue?.({
-    title: 'edit test',
-    location: 'edit test',
-    range: [],
-    tag: 'home',
-    des: 'This is an edit des.',
-  })
-  const formRef: React.Ref<FormInstance> = useRef(null)
+const EditTask: React.FC<EditTaskProps> = ({
+  className,
+  fieldsValue,
+  style,
+  itemId,
+  actionStatus,
+}) => {
   const [tagColorPicked, setTagColorPicked] = useState(Tags[fieldsValue.tag][1])
-  useEffect(() => {
-    const elem = document.getElementById(`edit_task--${itemId}`) as HTMLElement
-    elem.style.setProperty('--color-tag', tagColorPicked)
-  }, [tagColorPicked])
-
+  const formRef: React.Ref<FormInstance> = useRef(null)
   const config = {
     title: {
       rules: [{ required: true, message: 'Please enter the title of the task.' }],
@@ -58,28 +52,8 @@ const EditTask: React.FC<EditTaskProps> = ({ className, fieldsValue, style, item
       rules: [{ required: false }],
     },
   }
+  const dispatch = useDispatch()
 
-  const handleFinish = (fieldsValue: Store): void => {
-    const values = {
-      ...fieldsValue,
-      title: fieldsValue['title'],
-      location:
-        typeof fieldsValue['location'] === 'undefined'
-          ? 'No location specified.'
-          : fieldsValue['location'],
-      range: fieldsValue['range'],
-      tag: fieldsValue['tag'],
-      des:
-        typeof fieldsValue['des'] === 'undefined'
-          ? 'Add description through edit.'
-          : fieldsValue['des'],
-      status: 'default',
-    }
-    formRef?.current.resetFields()
-    console.log('onHandleFinish from edit status', values)
-
-    setTagColorPicked(Tags[formRef?.current.getFieldsValue().tag][1])
-  }
   const handleFinishFailed = (errorInfo: object) => {
     console.log('Failed:', errorInfo)
   }
@@ -88,7 +62,14 @@ const EditTask: React.FC<EditTaskProps> = ({ className, fieldsValue, style, item
     setTagColorPicked(Tags[value][1])
   }
 
-  console.log('test fields', formRef.current?.getFieldsValue())
+  useEffect(() => {
+    const elem = document.getElementById(`edit_task--${itemId}`) as HTMLElement
+    elem.style.setProperty('--color-tag', tagColorPicked)
+    if (actionStatus === `edit--${itemId}`) {
+      dispatch({ type: 'SET_ACTIVEFORM', id: itemId, ref: formRef })
+    }
+  }, [tagColorPicked, actionStatus])
+
   return (
     <Form
       name={`edit_task--${itemId}`}
@@ -101,6 +82,10 @@ const EditTask: React.FC<EditTaskProps> = ({ className, fieldsValue, style, item
         location: fieldsValue.location,
         tag: fieldsValue.tag,
         des: fieldsValue.des,
+        range: [
+          moment(localTimezone(fieldsValue.range[0])),
+          moment(localTimezone(fieldsValue.range[1])),
+        ],
       }}
     >
       <Form.Item name="title" {...config.title}>
@@ -116,10 +101,6 @@ const EditTask: React.FC<EditTaskProps> = ({ className, fieldsValue, style, item
           format="YYYY-MM-DD HH:mm"
           style={{ marginRight: 0 }}
           minuteStep={5}
-          defaultValue={[
-            moment(localTimezone(fieldsValue.range[0])),
-            moment(localTimezone(fieldsValue.range[1])),
-          ]}
         />
       </Form.Item>
       <Form.Item name="des" {...config.des}>
@@ -141,4 +122,5 @@ const EditTask: React.FC<EditTaskProps> = ({ className, fieldsValue, style, item
   )
 }
 
+// EditTask.displayName = 'EditTask'
 export default EditTask

@@ -36,7 +36,6 @@ const App: React.SFC<AppProps> = ({
   store,
 }) => {
   initialLang = availableLang.includes(initialLang) ? initialLang : fallbackLang
-
   return (
     <I18nProvider i18n={createI18n(langData, { lang: initialLang })}>
       <Provider store={store}>

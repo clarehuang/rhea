@@ -8,7 +8,7 @@ import {
   CheckCircleOutlined,
   CloseCircleOutlined,
 } from '@ant-design/icons'
-import { useDispatch } from 'react-redux'
+import { useSelector, useDispatch } from 'react-redux'
 import clsx from 'clsx'
 import ajax from '../../../client/utils/ajax'
 
@@ -20,10 +20,11 @@ interface TaskActionProps {
 }
 
 const TaskAction: React.FC<TaskActionProps> = ({ status, itemId, ...props }) => {
+  const globalState = useSelector((state) => state)
+  console.log('global state is ', globalState.activeForm?.id)
   const dispatch = useDispatch()
   const [currentStatus, setStatus] = useState(status ? status : 'default')
   let previousStatus = ''
-
   const handleClick = (e: React.MouseEvent | React.KeyboardEvent): void => {
     previousStatus = currentStatus
     const elem = e.currentTarget as HTMLButtonElement
@@ -34,7 +35,6 @@ const TaskAction: React.FC<TaskActionProps> = ({ status, itemId, ...props }) => 
     ) {
       value === 'confirm' ? setStatus('default') : setStatus(value)
       props.onSelectStatus?.(value, e)
-
       // TASK ACTION: DELETE
       if (previousStatus === 'delete' && value === 'confirm') {
         document.getElementById(itemId).remove()
@@ -54,13 +54,14 @@ const TaskAction: React.FC<TaskActionProps> = ({ status, itemId, ...props }) => 
       }
       // TASK ACTION: EDIT
       if (previousStatus === 'edit' && value === 'confirm') {
-        console.log('Save edits', itemId)
+        const values = globalState.activeForm?.formRef?.current?.getFieldsValue()
         ajax({
           url: '/api/task',
           method: 'PATCH',
-          data: { _id: itemId },
+          data: { _id: itemId, ...values },
           success(res, status) {
             console.log('res type is', res)
+            dispatch({ type: 'TASK_EDIT', editedId: itemId, updatedValues: values })
           },
           fail(res, status) {
             //TODO : finish fail action, indluding error handling
@@ -68,6 +69,7 @@ const TaskAction: React.FC<TaskActionProps> = ({ status, itemId, ...props }) => 
             console.log('post task fails')
           },
         })
+        dispatch({ type: 'SET_ACTIVEFORM', id: null, ref: null })
       }
       // TASK ACTION: CHECK
       if (value === 'check' || value === 'undo') {
@@ -84,6 +86,13 @@ const TaskAction: React.FC<TaskActionProps> = ({ status, itemId, ...props }) => 
             console.log('post task fails')
           },
         })
+      }
+      // TASK ACTION: CANCEl, RETURN DEFAULT
+      if (
+        (previousStatus === 'edit' && value === 'default') ||
+        (previousStatus === 'delete' && value === 'default')
+      ) {
+        dispatch({ type: 'SET_ACTIVEFORM', id: null, ref: null })
       }
     }
   }

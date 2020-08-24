@@ -5,10 +5,22 @@ import moment from 'moment'
 function reducer(
   state = {
     tasks: [],
+    blogs: [],
+    activeForm: {},
   },
   action
 ) {
   switch (action.type) {
+    case 'SET_ACTIVEFORM':
+      return {
+        ...state,
+        activeForm: { id: action.id, formRef: action.ref },
+      }
+    case 'RESET_ACTIVEFORM':
+      return {
+        ...state,
+        activeForm: {},
+      }
     case 'TASK_GET':
       return {
         ...state,
@@ -35,6 +47,17 @@ function reducer(
       const checkedTaskIndex = state.tasks.findIndex(({ _id }) => _id === action.checkedID)
       state.tasks[checkedTaskIndex].status =
         state.tasks[checkedTaskIndex].status === 'default' ? 'check' : 'default'
+      return {
+        ...state,
+        tasks: [...state.tasks],
+      }
+    }
+    case 'TASK_EDIT': {
+      const editedTaskIndex = state.tasks.findIndex(({ _id }) => _id === action.editedId)
+      state.tasks[editedTaskIndex] = Object.assign(
+        state.tasks[editedTaskIndex],
+        action.updatedValues
+      )
       return {
         ...state,
         tasks: [...state.tasks],

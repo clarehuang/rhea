@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react'
+import React, { useState, useEffect, useRef, createRef } from 'react'
 import { Timeline } from 'antd'
 import { EnvironmentOutlined, LoadingOutlined } from '@ant-design/icons'
 import { useSelector, useDispatch } from 'react-redux'
@@ -19,7 +19,8 @@ const TaskTimeline: React.FC<TaskTimelineProps> = ({ filterValue }) => {
   const tasks = useSelector((state) => state.tasks)
   const dispatch = useDispatch()
   const [isLoading, setLoading] = useState(false)
-  const [actionState, setActionState] = useState('')
+  const [actionStatus, setActionState] = useState('')
+
   const RenderTimeline = (items: TaskData, filterTagValue: string): React.ReactNode => {
     return items.map((item, index: number) => (
       <Timeline.Item
@@ -49,8 +50,8 @@ const TaskTimeline: React.FC<TaskTimelineProps> = ({ filterValue }) => {
             className={clsx(`task-timeline-edit-form task-edit-form--${item._id}`)}
             fieldsValue={item}
             itemId={item._id}
-            onSetValue={(values) => console.log(values)}
             style={{ display: 'none' }}
+            actionStatus={actionStatus}
           />
           <TaskAction
             status={item.status}
@@ -61,7 +62,7 @@ const TaskTimeline: React.FC<TaskTimelineProps> = ({ filterValue }) => {
               document.querySelector(`.task-edit-form--${item._id}`).style.display =
                 value === 'edit' ? 'block' : 'none'
 
-              setActionState(value)
+              setActionState(`${value}--${item._id}`)
             }}
           />
         </div>
