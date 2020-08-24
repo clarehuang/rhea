@@ -54,17 +54,13 @@ const EditTask: React.FC<EditTaskProps> = ({
   }
   const dispatch = useDispatch()
 
-  const handleFinishFailed = (errorInfo: object) => {
-    console.log('Failed:', errorInfo)
-  }
-
   const handleTagChange = (value: string): void => {
     setTagColorPicked(Tags[value][1])
   }
 
   useEffect(() => {
     const elem = document.getElementById(`edit_task--${itemId}`) as HTMLElement
-    elem.style.setProperty('--color-tag', tagColorPicked)
+    elem?.style.setProperty('--color-tag', tagColorPicked)
     if (actionStatus === `edit--${itemId}`) {
       dispatch({ type: 'SET_ACTIVEFORM', id: itemId, ref: formRef })
     }
@@ -74,7 +70,6 @@ const EditTask: React.FC<EditTaskProps> = ({
     <Form
       name={`edit_task--${itemId}`}
       className={clsx(`add-task-form`, className)}
-      onFinishFailed={handleFinishFailed}
       style={Object.assign({ paddingTop: '1rem' }, style)}
       ref={formRef}
       initialValues={{
@@ -94,7 +89,6 @@ const EditTask: React.FC<EditTaskProps> = ({
       <Form.Item name="location" {...config.location}>
         <Input type="Location" placeholder="Location" />
       </Form.Item>
-
       <Form.Item name="range" {...config.range}>
         <RangePicker
           showTime={{ format: 'HH:mm' }}

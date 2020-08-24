@@ -16,10 +16,15 @@ interface TaskTimelineProps {
 }
 
 const TaskTimeline: React.FC<TaskTimelineProps> = ({ filterValue }) => {
-  const tasks = useSelector((state) => state.tasks)
+  const { tasks, activeStatus } = useSelector((state) => state)
+
+  // DEBUG
+  // const globalState = useSelector((state) => state)
+  // console.log('in TaskTimeline activeForm is ', globalState.activeForm?.id)
+
   const dispatch = useDispatch()
   const [isLoading, setLoading] = useState(false)
-  const [actionStatus, setActionState] = useState('')
+  const [actionStatus, setActionState] = useState(null)
 
   const RenderTimeline = (items: TaskData, filterTagValue: string): React.ReactNode => {
     return items.map((item, index: number) => (
@@ -32,11 +37,16 @@ const TaskTimeline: React.FC<TaskTimelineProps> = ({ filterValue }) => {
         })}
         key={`task-timeline-${index}`}
         id={item._id}
+        onMouseLeave={(): void => {
+          setActionState(null)
+          dispatch({ type: 'SET_ACTIVESTATUS', statusValue: null })
+        }}
       >
         <div className="task-timeline-card">
           <div
             className={clsx(`task-timeline-card-content task-content--${item._id}`, {
               'line-through': item.status === 'check',
+              hidden: actionStatus === `edit--${item._id}`,
             })}
           >
             <h3>{item.title}</h3>
@@ -47,22 +57,19 @@ const TaskTimeline: React.FC<TaskTimelineProps> = ({ filterValue }) => {
             </a>
           </div>
           <EditTask
-            className={clsx(`task-timeline-edit-form task-edit-form--${item._id}`)}
+            className={clsx(`task-timeline-edit-form task-edit-form--${item._id} hidden`, {
+              block: actionStatus === `edit--${item._id}`,
+            })}
             fieldsValue={item}
             itemId={item._id}
-            style={{ display: 'none' }}
             actionStatus={actionStatus}
           />
           <TaskAction
             status={item.status}
+            actionStatus={actionStatus}
             itemId={item._id}
-            onSelectStatus={(value, e) => {
-              document.querySelector(`.task-content--${item._id}`).style.display =
-                value === 'edit' ? 'none' : 'block'
-              document.querySelector(`.task-edit-form--${item._id}`).style.display =
-                value === 'edit' ? 'block' : 'none'
-
-              setActionState(`${value}--${item._id}`)
+            onSelectStatus={(value): void => {
+              setActionState(value === 'edit' ? `${value}--${item._id}` : value)
             }}
           />
         </div>

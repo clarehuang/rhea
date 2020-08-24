@@ -79,8 +79,6 @@ const AddTask: React.FC<AddTaskProps> = ({ selectedTagColor = Tags['home'][1], o
       data: values,
       success(res, status) {
         //TODO : finish success action, indluding redirect to home page
-        console.log(status, res)
-        console.log('post task sucess', res)
         const obj = res as Task
         dispatch({
           type: 'TASK_ADD',
@@ -89,7 +87,6 @@ const AddTask: React.FC<AddTaskProps> = ({ selectedTagColor = Tags['home'][1], o
       },
       fail(res, status) {
         //TODO : finish fail action, indluding error handling
-        console.log(status, res)
         console.log('post task fails')
       },
     })

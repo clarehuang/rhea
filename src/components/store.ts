@@ -7,6 +7,7 @@ function reducer(
     tasks: [],
     blogs: [],
     activeForm: {},
+    activeStatus: '',
   },
   action
 ) {
@@ -16,10 +17,10 @@ function reducer(
         ...state,
         activeForm: { id: action.id, formRef: action.ref },
       }
-    case 'RESET_ACTIVEFORM':
+    case 'SET_ACTIVESTATUS':
       return {
         ...state,
-        activeForm: {},
+        activeStatus: action.statusValue,
       }
     case 'TASK_GET':
       return {
@@ -58,6 +59,12 @@ function reducer(
         state.tasks[editedTaskIndex],
         action.updatedValues
       )
+      state.tasks.sort(function (a, b) {
+        return (
+          parseInt(moment(localTimezone(a.range[0])).format('X')) -
+          parseInt(moment(localTimezone(b.range[0])).format('X'))
+        )
+      })
       return {
         ...state,
         tasks: [...state.tasks],
