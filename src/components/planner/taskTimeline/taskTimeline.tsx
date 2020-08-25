@@ -19,7 +19,6 @@ const TaskTimeline: React.FC<TaskTimelineProps> = ({ filterValue }) => {
   const { tasks, activeStatus } = useSelector((state) => state)
   const dispatch = useDispatch()
   const [isLoading, setLoading] = useState(false)
-  const [actionStatus, setActionState] = useState(null)
 
   const RenderTimeline = (items: TaskData, filterTagValue: string): React.ReactNode => {
     return items.map((item, index: number) => (
@@ -33,7 +32,6 @@ const TaskTimeline: React.FC<TaskTimelineProps> = ({ filterValue }) => {
         key={`task-timeline-${index}`}
         id={item._id}
         onMouseLeave={(): void => {
-          setActionState(null)
           dispatch({ type: 'SET_ACTIVESTATUS', statusValue: null, _id: '' })
         }}
       >
@@ -43,7 +41,6 @@ const TaskTimeline: React.FC<TaskTimelineProps> = ({ filterValue }) => {
               className={clsx(`task-timeline-edit-form task-edit-form--${item._id}`, {})}
               fieldsValue={item}
               itemId={item._id}
-              actionStatus={actionStatus}
             />
           ) : (
             <div
@@ -59,14 +56,7 @@ const TaskTimeline: React.FC<TaskTimelineProps> = ({ filterValue }) => {
               </a>
             </div>
           )}
-          <TaskAction
-            status={item.status}
-            actionStatus={actionStatus}
-            itemId={item._id}
-            onSelectStatus={(value): void => {
-              setActionState(value === 'edit' ? `${value}--${item._id}` : value)
-            }}
-          />
+          <TaskAction status={item.status} itemId={item._id} />
         </div>
       </Timeline.Item>
     ))

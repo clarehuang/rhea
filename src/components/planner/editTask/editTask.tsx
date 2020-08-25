@@ -18,23 +18,14 @@ interface EditTaskProps {
   style?: React.CSSProperties
   visible?: boolean
   fieldsValue: Task
-  // dispatch formref
-  actionStatus?: string
 }
 
 const { Option } = Select
 const { TextArea } = Input
-const EditTask: React.FC<EditTaskProps> = ({
-  className,
-  fieldsValue,
-  style,
-  itemId,
-  actionStatus,
-}) => {
-  // const fieldsValue = useSelector((state) => state.tasks.find(({ _id }) => _id === itemId))
-  // console.log('task ID is ', itemId, 'fieldsValue is ', fieldsValue)
+const EditTask: React.FC<EditTaskProps> = ({ className, fieldsValue, style, itemId }) => {
   const [tagColorPicked, setTagColorPicked] = useState(Tags[fieldsValue.tag][1])
   const formRef: React.Ref<FormInstance> = useRef(null)
+  const activeStatus = useSelector((state) => state.activeStatus)
   const dispatch = useDispatch()
 
   const handleTagChange = (value: string): void => {
@@ -43,10 +34,10 @@ const EditTask: React.FC<EditTaskProps> = ({
   useEffect(() => {
     const elem = document.getElementById(`edit_task--${itemId}`) as HTMLElement
     elem?.style.setProperty('--task-color-tag', tagColorPicked)
-    if (actionStatus === `edit--${itemId}`) {
+    if (`${activeStatus?.value}--${activeStatus?._id}` === `edit--${itemId}`) {
       dispatch({ type: 'SET_ACTIVEFORM', id: itemId, ref: formRef })
     }
-  }, [tagColorPicked, actionStatus])
+  }, [tagColorPicked, activeStatus])
 
   return (
     <Form

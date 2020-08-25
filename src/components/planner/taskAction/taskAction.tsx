@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react'
+import React from 'react'
 import { Button } from 'antd'
 import {
   DeleteOutlined,
@@ -13,15 +13,11 @@ import clsx from 'clsx'
 import ajax from '../../../client/utils/ajax'
 
 interface TaskActionProps {
-  // passed down from the outside component which is TaskTimeline
-  // default status directly used from data
   status?: string
-  actionStatus?: string
   itemId?: string
-  onSelectStatus?: (status: string, e: React.MouseEvent | React.KeyboardEvent) => void
 }
 
-const TaskAction: React.FC<TaskActionProps> = ({ status, itemId, ...props }) => {
+const TaskAction: React.FC<TaskActionProps> = ({ status, itemId }) => {
   const { activeForm, activeStatus } = useSelector((state) => state)
   // console.log('in TaskAction global state is ', activeForm?.id)
   const dispatch = useDispatch()
@@ -42,7 +38,7 @@ const TaskAction: React.FC<TaskActionProps> = ({ status, itemId, ...props }) => 
       value === 'confirm'
         ? dispatch({ type: 'SET_ACTIVESTATUS', statusValue: 'default', _id: '' })
         : dispatch({ type: 'SET_ACTIVESTATUS', statusValue: value, _id: itemId })
-      props.onSelectStatus?.(value, e)
+
       // TASK ACTION: DELETE
       if (previousStatus === 'delete' && value === 'confirm') {
         document.getElementById(itemId).remove()
@@ -101,8 +97,7 @@ const TaskAction: React.FC<TaskActionProps> = ({ status, itemId, ...props }) => 
       }
     }
   }
-  const actualProps = { ...props }
-  delete actualProps.onSelectStatus
+
   return (
     <div className="task-timeline-action">
       <Button
