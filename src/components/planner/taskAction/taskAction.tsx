@@ -26,7 +26,9 @@ const TaskAction: React.FC<TaskActionProps> = ({ status, itemId, ...props }) => 
   // console.log('in TaskAction global state is ', activeForm?.id)
   const dispatch = useDispatch()
   const currentStatus =
-    activeStatus === null || typeof activeStatus === 'undefined' ? status : activeStatus
+    activeStatus?.value === null || typeof activeStatus?.value === 'undefined'
+      ? status
+      : activeStatus?.value
   let previousStatus = ''
 
   const handleClick = (e: React.MouseEvent | React.KeyboardEvent): void => {
@@ -38,8 +40,8 @@ const TaskAction: React.FC<TaskActionProps> = ({ status, itemId, ...props }) => 
       (e.nativeEvent instanceof KeyboardEvent && e.nativeEvent.keyCode === 32)
     ) {
       value === 'confirm'
-        ? dispatch({ type: 'SET_ACTIVESTATUS', statusValue: 'default' })
-        : dispatch({ type: 'SET_ACTIVESTATUS', statusValue: value })
+        ? dispatch({ type: 'SET_ACTIVESTATUS', statusValue: 'default', _id: '' })
+        : dispatch({ type: 'SET_ACTIVESTATUS', statusValue: value, _id: itemId })
       props.onSelectStatus?.(value, e)
       // TASK ACTION: DELETE
       if (previousStatus === 'delete' && value === 'confirm') {

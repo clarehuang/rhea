@@ -1,12 +1,13 @@
 import React, { useEffect, useState, useRef } from 'react'
 import { Form, Input, Select, DatePicker } from 'antd'
 import { FormInstance } from 'antd/lib/form'
-import { useDispatch } from 'react-redux'
+import { useSelector, useDispatch } from 'react-redux'
 import moment from 'moment'
 import clsx from 'clsx'
 import { localTimezone } from '../../../client/utils'
 import { Tags } from '../index'
 import { Task } from '../../type'
+import { taskFormConfig } from '../config'
 
 const { RangePicker } = DatePicker
 
@@ -30,37 +31,18 @@ const EditTask: React.FC<EditTaskProps> = ({
   itemId,
   actionStatus,
 }) => {
+  // const fieldsValue = useSelector((state) => state.tasks.find(({ _id }) => _id === itemId))
+  // console.log('task ID is ', itemId, 'fieldsValue is ', fieldsValue)
   const [tagColorPicked, setTagColorPicked] = useState(Tags[fieldsValue.tag][1])
   const formRef: React.Ref<FormInstance> = useRef(null)
-  const config = {
-    title: {
-      rules: [{ required: true, message: 'Please enter the title of the task.' }],
-    },
-    location: {
-      rules: [{ required: false }],
-    },
-    range: {
-      rules: [{ required: true, message: 'Please enter the date and time.' }],
-    },
-    tag: {
-      rules: [{ required: false }],
-    },
-    des: {
-      rules: [{ required: false }],
-    },
-    status: {
-      rules: [{ required: false }],
-    },
-  }
   const dispatch = useDispatch()
 
   const handleTagChange = (value: string): void => {
     setTagColorPicked(Tags[value][1])
   }
-
   useEffect(() => {
     const elem = document.getElementById(`edit_task--${itemId}`) as HTMLElement
-    elem?.style.setProperty('--color-tag', tagColorPicked)
+    elem?.style.setProperty('--task-color-tag', tagColorPicked)
     if (actionStatus === `edit--${itemId}`) {
       dispatch({ type: 'SET_ACTIVEFORM', id: itemId, ref: formRef })
     }
@@ -83,13 +65,7 @@ const EditTask: React.FC<EditTaskProps> = ({
         ],
       }}
     >
-      <Form.Item name="title" {...config.title}>
-        <Input placeholder="Title" />
-      </Form.Item>
-      <Form.Item name="location" {...config.location}>
-        <Input type="Location" placeholder="Location" />
-      </Form.Item>
-      <Form.Item name="range" {...config.range}>
+      <Form.Item name="range" {...taskFormConfig.range}>
         <RangePicker
           showTime={{ format: 'HH:mm' }}
           format="YYYY-MM-DD HH:mm"
@@ -97,14 +73,20 @@ const EditTask: React.FC<EditTaskProps> = ({
           minuteStep={5}
         />
       </Form.Item>
-      <Form.Item name="des" {...config.des}>
+      <Form.Item name="title" {...taskFormConfig.title}>
+        <Input placeholder="Title" />
+      </Form.Item>
+      <Form.Item name="location" {...taskFormConfig.location}>
+        <Input type="Location" placeholder="Location" />
+      </Form.Item>
+      <Form.Item name="des" {...taskFormConfig.des}>
         <TextArea
           placeholder="Description"
           autoSize={{ minRows: 5, maxRows: 8 }}
           className="task-des"
         />
       </Form.Item>
-      <Form.Item name="tag" style={{ width: '40%' }} {...config.tag}>
+      <Form.Item name="tag" style={{ width: '40%' }} {...taskFormConfig.tag}>
         <Select onChange={handleTagChange} className="tag-select" bordered={false}>
           <Option value="home">Home</Option>
           <Option value="work">Work</Option>

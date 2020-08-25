@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useRef, createRef } from 'react'
+import React, { useState, useEffect } from 'react'
 import { Timeline } from 'antd'
 import { EnvironmentOutlined, LoadingOutlined } from '@ant-design/icons'
 import { useSelector, useDispatch } from 'react-redux'
@@ -17,11 +17,6 @@ interface TaskTimelineProps {
 
 const TaskTimeline: React.FC<TaskTimelineProps> = ({ filterValue }) => {
   const { tasks, activeStatus } = useSelector((state) => state)
-
-  // DEBUG
-  // const globalState = useSelector((state) => state)
-  // console.log('in TaskTimeline activeForm is ', globalState.activeForm?.id)
-
   const dispatch = useDispatch()
   const [isLoading, setLoading] = useState(false)
   const [actionStatus, setActionState] = useState(null)
@@ -39,31 +34,31 @@ const TaskTimeline: React.FC<TaskTimelineProps> = ({ filterValue }) => {
         id={item._id}
         onMouseLeave={(): void => {
           setActionState(null)
-          dispatch({ type: 'SET_ACTIVESTATUS', statusValue: null })
+          dispatch({ type: 'SET_ACTIVESTATUS', statusValue: null, _id: '' })
         }}
       >
         <div className="task-timeline-card">
-          <div
-            className={clsx(`task-timeline-card-content task-content--${item._id}`, {
-              'line-through': item.status === 'check',
-              hidden: actionStatus === `edit--${item._id}`,
-            })}
-          >
-            <h3>{item.title}</h3>
-            <p>{item.des}</p>
-            <a href="/planner" className="text-info">
-              <EnvironmentOutlined style={{ marginRight: '0.5rem' }} />
-              {item.location}
-            </a>
-          </div>
-          <EditTask
-            className={clsx(`task-timeline-edit-form task-edit-form--${item._id} hidden`, {
-              block: actionStatus === `edit--${item._id}`,
-            })}
-            fieldsValue={item}
-            itemId={item._id}
-            actionStatus={actionStatus}
-          />
+          {`${activeStatus?.value}--${activeStatus?._id}` === `edit--${item._id}` ? (
+            <EditTask
+              className={clsx(`task-timeline-edit-form task-edit-form--${item._id}`, {})}
+              fieldsValue={item}
+              itemId={item._id}
+              actionStatus={actionStatus}
+            />
+          ) : (
+            <div
+              className={clsx(`task-timeline-card-content task-content--${item._id}`, {
+                'line-through': item.status === 'check',
+              })}
+            >
+              <h3>{item.title}</h3>
+              <p>{item.des}</p>
+              <a href="/planner" className="text-info">
+                <EnvironmentOutlined style={{ marginRight: '0.5rem' }} />
+                {item.location}
+              </a>
+            </div>
+          )}
           <TaskAction
             status={item.status}
             actionStatus={actionStatus}

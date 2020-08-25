@@ -5,6 +5,7 @@ import { FormInstance } from 'antd/lib/form'
 import { Store } from 'antd/lib/form/interface'
 import { Tags } from '../index'
 import { Task } from '../../type'
+import { taskFormConfig } from '../config'
 import ajax from '../../../client/utils/ajax'
 
 const { RangePicker } = DatePicker
@@ -25,30 +26,9 @@ const AddTask: React.FC<AddTaskProps> = ({ selectedTagColor = Tags['home'][1], o
   const formRef: React.Ref<FormInstance> = useRef(null)
   const [tagColorPicked, setTagColorPicked] = useState(selectedTagColor)
   useEffect(() => {
-    const elem = document.querySelector('.add-task-form') as HTMLElement
-    elem.style.setProperty('--color-tag', tagColorPicked)
+    const root = document.documentElement as HTMLElement
+    root.style.setProperty('--task-color-tag', tagColorPicked)
   }, [tagColorPicked])
-
-  const config = {
-    title: {
-      rules: [{ required: true, message: 'Please enter the title of the task.' }],
-    },
-    location: {
-      rules: [{ required: false }],
-    },
-    range: {
-      rules: [{ required: true, message: 'Please enter the date and time.' }],
-    },
-    tag: {
-      rules: [{ required: false }],
-    },
-    des: {
-      rules: [{ required: false }],
-    },
-    status: {
-      rules: [{ required: false }],
-    },
-  }
 
   const handleReset = (): void => {
     formRef?.current.resetFields()
@@ -97,6 +77,7 @@ const AddTask: React.FC<AddTaskProps> = ({ selectedTagColor = Tags['home'][1], o
   }
 
   const handleTagChange = (value: string): void => {
+    console.log('check tag ', value)
     setTagColorPicked(Tags[value][1])
   }
 
@@ -112,14 +93,14 @@ const AddTask: React.FC<AddTaskProps> = ({ selectedTagColor = Tags['home'][1], o
         tag: 'home',
       }}
     >
-      <Form.Item name="title" {...config.title}>
+      <Form.Item name="title" {...taskFormConfig.title}>
         <Input placeholder="Title" />
       </Form.Item>
-      <Form.Item name="location" {...config.location}>
+      <Form.Item name="location" {...taskFormConfig.location}>
         <Input type="Location" placeholder="Location" />
       </Form.Item>
 
-      <Form.Item name="range" {...config.range}>
+      <Form.Item name="range" {...taskFormConfig.range}>
         <RangePicker
           showTime={{ format: 'HH:mm' }}
           format="YYYY-MM-DD HH:mm"
@@ -127,14 +108,14 @@ const AddTask: React.FC<AddTaskProps> = ({ selectedTagColor = Tags['home'][1], o
           minuteStep={5}
         />
       </Form.Item>
-      <Form.Item name="des" {...config.des}>
+      <Form.Item name="des" {...taskFormConfig.des}>
         <TextArea
           placeholder="Description"
           autoSize={{ minRows: 5, maxRows: 8 }}
           className="task-des"
         />
       </Form.Item>
-      <Form.Item name="tag" style={{ width: '40%' }} {...config.tag}>
+      <Form.Item name="tag" style={{ width: '40%' }} {...taskFormConfig.tag}>
         <Select onChange={handleTagChange} className="tag-select" bordered={false}>
           <Option value="home">Home</Option>
           <Option value="work">Work</Option>

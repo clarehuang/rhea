@@ -7,7 +7,7 @@ function reducer(
     tasks: [],
     blogs: [],
     activeForm: {},
-    activeStatus: '',
+    activeStatus: { value: '', _id: '' },
   },
   action
 ) {
@@ -20,7 +20,7 @@ function reducer(
     case 'SET_ACTIVESTATUS':
       return {
         ...state,
-        activeStatus: action.statusValue,
+        activeStatus: { value: action.statusValue, _id: action._id },
       }
     case 'TASK_GET':
       return {
