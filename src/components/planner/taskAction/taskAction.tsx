@@ -19,7 +19,6 @@ interface TaskActionProps {
 
 const TaskAction: React.FC<TaskActionProps> = ({ status, itemId }) => {
   const { activeForm, activeStatus } = useSelector((state) => state)
-  // console.log('in TaskAction global state is ', activeForm?.id)
   const dispatch = useDispatch()
   const currentStatus =
     activeStatus?.value === null || typeof activeStatus?.value === 'undefined'

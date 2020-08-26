@@ -1,7 +1,16 @@
 const express = require('express')
+const moment = require('moment')
 const Task = require('../models/task')
 const router = express.Router()
 
+//////////////////// Utils ////////////////////////
+function pareZoneFormat(date, format) {
+  // @date : string
+  // @format: string
+  return moment.parseZone(date).local().format(format)
+}
+
+//////////////////// REST API ////////////////////////
 router.post('/', function (req, res) {
   const task = new Task(req.body)
   task.save(function (err, data) {
@@ -17,13 +26,14 @@ router.get('/', (req, res, next) => {
     if (err) {
       return res.status(400).send(data).end()
     }
-    res.status(200).send(data).end()
+    const result = data.filter(
+      ({ range }) => pareZoneFormat(range[0], 'MM-DD-YYYY') === req.query.pickedDate
+    )
+    res.status(200).send(result).end()
   })
 })
 //CHECK
 router.patch('/', (req, res, next) => {
-  console.log('check request', req.body._id, 'check status', req.body.status)
-
   Task.updateOne({ _id: req.body._id }, req.body, (err, data) => {
     if (err) {
       return res.status(400).send(data).end()

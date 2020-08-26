@@ -1,5 +1,5 @@
 import React, { useEffect, useState, useRef } from 'react'
-import { Form, Input, Select, DatePicker } from 'antd'
+import { Form, Input, Select, DatePicker, Row, Col } from 'antd'
 import { FormInstance } from 'antd/lib/form'
 import { useSelector, useDispatch } from 'react-redux'
 import moment from 'moment'
@@ -27,7 +27,6 @@ const EditTask: React.FC<EditTaskProps> = ({ className, fieldsValue, style, item
   const formRef: React.Ref<FormInstance> = useRef(null)
   const activeStatus = useSelector((state) => state.activeStatus)
   const dispatch = useDispatch()
-
   const handleTagChange = (value: string): void => {
     setTagColorPicked(Tags[value][1])
   }
@@ -42,7 +41,7 @@ const EditTask: React.FC<EditTaskProps> = ({ className, fieldsValue, style, item
   return (
     <Form
       name={`edit_task--${itemId}`}
-      className={clsx(`add-task-form`, className)}
+      className={clsx(`edit-task-form`, className)}
       style={Object.assign({ paddingTop: '1rem' }, style)}
       ref={formRef}
       initialValues={{
@@ -60,15 +59,34 @@ const EditTask: React.FC<EditTaskProps> = ({ className, fieldsValue, style, item
         <RangePicker
           showTime={{ format: 'HH:mm' }}
           format="YYYY-MM-DD HH:mm"
-          style={{ marginRight: 0 }}
+          style={{ marginRight: 0, width: '100%' }}
           minuteStep={5}
         />
       </Form.Item>
+
       <Form.Item name="title" {...taskFormConfig.title}>
         <Input placeholder="Title" />
       </Form.Item>
+
       <Form.Item name="location" {...taskFormConfig.location}>
         <Input type="Location" placeholder="Location" />
+      </Form.Item>
+
+      <Form.Item name="tag" style={{ width: '50%', marginLeft: '0.75rem' }} {...taskFormConfig.tag}>
+        <Select onChange={handleTagChange} className="tag-select" bordered={false}>
+          <Option className="edit-task-select-option" value="home">
+            Home
+          </Option>
+          <Option className="edit-task-select-option" value="work">
+            Work
+          </Option>
+          <Option className="edit-task-select-option" value="finance">
+            Finance
+          </Option>
+          <Option className="edit-task-select-option" value="other">
+            Other
+          </Option>
+        </Select>
       </Form.Item>
       <Form.Item name="des" {...taskFormConfig.des}>
         <TextArea
@@ -77,17 +95,8 @@ const EditTask: React.FC<EditTaskProps> = ({ className, fieldsValue, style, item
           className="task-des"
         />
       </Form.Item>
-      <Form.Item name="tag" style={{ width: '40%' }} {...taskFormConfig.tag}>
-        <Select onChange={handleTagChange} className="tag-select" bordered={false}>
-          <Option value="home">Home</Option>
-          <Option value="work">Work</Option>
-          <Option value="finance">Finance</Option>
-          <Option value="other">Other</Option>
-        </Select>
-      </Form.Item>
     </Form>
   )
 }
 
-// EditTask.displayName = 'EditTask'
 export default EditTask

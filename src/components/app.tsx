@@ -9,7 +9,7 @@ import Planner from './planner/planner'
 import Journal from './journal/journal'
 import Settings from './settings/settings'
 import Register from './register/register'
-import { Layout } from './_layout/index'
+import { Layout } from './layout/index'
 
 import './main.less'
 import { Store } from 'redux'
@@ -43,10 +43,26 @@ const App: React.SFC<AppProps> = ({
           <AntLayout>
             <Content className="main-container">
               <Switch>
-                <Route exact path="/" component={() => <h1>This is the Home Page</h1>} />
-                <Route exact path="/planner" component={() => <Layout Comp={Planner} />} />
-                <Route exact path="/journal" component={() => <Layout Comp={Journal} />} />
-                <Route exact path="/settings" component={() => <Layout Comp={Settings} />} />
+                <Route
+                  exact
+                  path="/"
+                  component={(): JSX.Element => <h1>This is the Home Page</h1>}
+                />
+                <Route
+                  exact
+                  path="/planner"
+                  component={(): JSX.Element => <Layout Comp={Planner} />}
+                />
+                <Route
+                  exact
+                  path="/journal"
+                  component={(): JSX.Element => <Layout Comp={Journal} />}
+                />
+                <Route
+                  exact
+                  path="/settings"
+                  component={(): JSX.Element => <Layout Comp={Settings} />}
+                />
                 <Route exact path="/register" component={Register} />
               </Switch>
             </Content>

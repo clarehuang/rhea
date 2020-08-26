@@ -1,8 +1,10 @@
 import React from 'react'
 import { Layout as AntdLayout } from 'antd'
+import { useSelector, useDispatch } from 'react-redux'
 import { SiderMenu } from './siderMenu/siderMenu'
 import { Calendar } from './calendar/calendar'
 import './layout.less'
+import moment from 'moment'
 
 const { Footer } = AntdLayout
 interface LayoutProps {
@@ -10,9 +12,10 @@ interface LayoutProps {
 }
 
 const Layout: React.FC<LayoutProps> = ({ Comp }) => {
+  const dispatch = useDispatch()
   const handleSelect = (date: any) => {
-    const pickedDate = date._d
-    console.log(pickedDate.getMonth() + 1)
+    const pickedDate = moment(date._d).format('MM-DD-YYYY')
+    dispatch({ type: 'SET_PICKEDDATE', pickedDate })
   }
   return (
     <div className="layout">

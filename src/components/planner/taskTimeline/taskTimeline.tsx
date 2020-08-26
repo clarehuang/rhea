@@ -16,7 +16,7 @@ interface TaskTimelineProps {
 }
 
 const TaskTimeline: React.FC<TaskTimelineProps> = ({ filterValue }) => {
-  const { tasks, activeStatus } = useSelector((state) => state)
+  const { tasks, activeStatus, pickedDate } = useSelector((state) => state)
   const dispatch = useDispatch()
   const [isLoading, setLoading] = useState(false)
 
@@ -26,13 +26,16 @@ const TaskTimeline: React.FC<TaskTimelineProps> = ({ filterValue }) => {
         label={`${moment(localTimezone(item.range[0])).format('hh:mm a')} - ${moment(
           localTimezone(item.range[1])
         ).format('hh:mm a')}`}
-        className={clsx(`task-${item.tag}`, {
+        className={clsx(`task-timeline-li task-${item.tag}`, {
           hidden: filterTagValue !== 'all' && filterTagValue !== item.tag,
         })}
         key={`task-timeline-${index}`}
         id={item._id}
-        onMouseLeave={(): void => {
-          dispatch({ type: 'SET_ACTIVESTATUS', statusValue: null, _id: '' })
+        onMouseLeave={(e): void => {
+          const elem = e.target as HTMLLIElement
+          if (elem.tagName !== 'INPUT' && elem.tagName !== 'TEXTAREA') {
+            dispatch({ type: 'SET_ACTIVESTATUS', statusValue: null, _id: '' })
+          }
         }}
       >
         <div className="task-timeline-card">
@@ -67,7 +70,8 @@ const TaskTimeline: React.FC<TaskTimelineProps> = ({ filterValue }) => {
       url: '/api/task',
       method: 'GET',
       data: {},
-      success(res: object, status) {
+      query: `?pickedDate=${pickedDate}`,
+      success(res, status) {
         setLoading(false)
         const tasks = res as Array<object>
         dispatch({ type: 'TASK_GET', allTasks: tasks })
@@ -83,11 +87,10 @@ const TaskTimeline: React.FC<TaskTimelineProps> = ({ filterValue }) => {
       },
       fail(res, status) {
         //TODO : finish fail action, indluding error handling
-        console.log(status, res)
         console.log('post task fails')
       },
     })
-  }, [])
+  }, [pickedDate])
   if (isLoading) {
     return (
       <h3>

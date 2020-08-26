@@ -7,6 +7,7 @@ interface AjaxProps {
   method?: HttpMethod
   url?: string
   data?: AjaxData
+  query?: string
   success?: (res?: object, status?: number, xhr?: XMLHttpRequest) => void
   fail?: (res?: object, status?: number, xhr?: XMLHttpRequest) => void
   complete?: (res?: object, status?: number, xhr?: XMLHttpRequest) => void
@@ -16,6 +17,7 @@ interface AjaxProps {
 const ajax = ({
   method,
   url,
+  query = '',
   data,
   success,
   fail,
@@ -23,7 +25,8 @@ const ajax = ({
   dataType = 'json',
 }: AjaxProps): void => {
   const xhr = new XMLHttpRequest()
-  xhr.open(method, url)
+  // const queryStr = query,vfvrv
+  xhr.open(method, url + query)
   xhr.setRequestHeader('Content-Type', 'application/json')
 
   xhr.onload = () => {

@@ -4,6 +4,7 @@ import moment from 'moment'
 // eslint-disable-next-line @typescript-eslint/explicit-function-return-type
 function reducer(
   state = {
+    pickedDate: moment().format('MM-DD-YYYY'),
     tasks: [],
     blogs: [],
     activeForm: {},
@@ -12,6 +13,11 @@ function reducer(
   action
 ) {
   switch (action.type) {
+    case 'SET_PICKEDDATE':
+      return {
+        ...state,
+        pickedDate: action.pickedDate,
+      }
     case 'SET_ACTIVEFORM':
       return {
         ...state,

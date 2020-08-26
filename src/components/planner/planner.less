@@ -23,7 +23,7 @@
   }
 }
 // AddTask form
-.add-task-form{
+.add-task-form, .edit-task-form{
   width: 100%;
   max-width: 28rem;
   input{
@@ -200,7 +200,11 @@
         display: none;
       }
     }
-    &:hover{
+  }
+}
+li.task-timeline-li{
+  &:hover{
+    .ant-timeline-item-content{
       width:calc(75% - 14px) !important;
       max-width: 57.5rem;
       box-shadow:@box-shadow;
@@ -229,10 +233,8 @@
         }
       } 
     }
-    
   }
 }
-
 // EditTask
 .task-timeline-edit-form{
   padding: 0.75rem;
