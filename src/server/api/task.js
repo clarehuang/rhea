@@ -26,9 +26,6 @@ router.get('/', (req, res, next) => {
     if (err) {
       return res.status(400).send(data).end()
     }
-    // const result = data.filter(
-    //   ({ range }) => pareZoneFormat(range[0], 'MM-DD-YYYY') === req.query.pickedDate
-    // )
     res.status(200).send(data).end()
   })
 })

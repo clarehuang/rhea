@@ -70,7 +70,7 @@ const TaskTimeline: React.FC<TaskTimelineProps> = ({ filterValue }) => {
       url: '/api/task',
       method: 'GET',
       data: {},
-      query: `?pickedDate=${pickedDate}`,
+      query: { pickedDate },
       success(res, status) {
         setLoading(false)
         const tasks = res as Array<object>
