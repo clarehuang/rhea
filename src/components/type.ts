@@ -12,6 +12,7 @@ export type Task = {
   title: string
   location: string
   range: Array<string>
+  startDate?: string
   tag: string
   des: string
   status?: string

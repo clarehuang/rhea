@@ -22,14 +22,14 @@ router.post('/', function (req, res) {
 })
 
 router.get('/', (req, res, next) => {
-  Task.find().exec((err, data) => {
+  Task.find({ startDate: req.query.pickedDate }).exec((err, data) => {
     if (err) {
       return res.status(400).send(data).end()
     }
-    const result = data.filter(
-      ({ range }) => pareZoneFormat(range[0], 'MM-DD-YYYY') === req.query.pickedDate
-    )
-    res.status(200).send(result).end()
+    // const result = data.filter(
+    //   ({ range }) => pareZoneFormat(range[0], 'MM-DD-YYYY') === req.query.pickedDate
+    // )
+    res.status(200).send(data).end()
   })
 })
 //CHECK

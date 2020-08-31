@@ -1,6 +1,7 @@
 import React, { useEffect, useState, useRef, CSSProperties } from 'react'
 import { Form, Input, Button, Row, Select, DatePicker } from 'antd'
 import { useDispatch } from 'react-redux'
+import { pareZoneFormat } from '../../../client/utils'
 import { FormInstance } from 'antd/lib/form'
 import { Store } from 'antd/lib/form/interface'
 import { Tags } from '../index'
@@ -51,12 +52,14 @@ const AddTask: React.FC<AddTaskProps> = ({ selectedTagColor = Tags['home'][1], o
           : fieldsValue['des'],
       status: 'default',
     }
+    const startDate = pareZoneFormat(values.range[0], 'MM-DD-YYYY')
+    dispatch({ type: 'SET_PICKEDDATE', pickedDate: startDate })
     formRef?.current.resetFields()
     onOpen?.(false)
     ajax({
       url: '/api/task',
       method: 'POST',
-      data: values,
+      data: { ...values, startDate },
       success(res, status) {
         //TODO : finish success action, indluding redirect to home page
         const obj = res as Task

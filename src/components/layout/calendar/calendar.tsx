@@ -3,14 +3,19 @@ import { Calendar as AntCalendar, Row, Col } from 'antd'
 import './calendar.less'
 import clsx from 'clsx'
 import { useI18n } from 'react-simple-i18n'
+import { Moment } from 'moment'
 
 interface CalendarProps {
   imgUrl: string
   onPanelChange?: (value: object, mode: string) => void
   onSelect?: (date: object) => void
   className?: string
+  defaultValue?: Moment
+  value?: Moment
 }
 const Calendar: React.FC<CalendarProps> = ({
+  defaultValue,
+  value,
   imgUrl,
   onPanelChange,
   onSelect,
@@ -60,6 +65,8 @@ const Calendar: React.FC<CalendarProps> = ({
       </div>
       <div className="calendar-module">
         <AntCalendar
+          defaultValue={defaultValue}
+          value={value}
           fullscreen={false}
           onPanelChange={handlePanelChange}
           onSelect={handleSelecrt}

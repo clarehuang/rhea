@@ -9,6 +9,7 @@ import {
   CloseCircleOutlined,
 } from '@ant-design/icons'
 import { useSelector, useDispatch } from 'react-redux'
+import { pareZoneFormat } from '../../../client/utils'
 import clsx from 'clsx'
 import ajax from '../../../client/utils/ajax'
 
@@ -58,10 +59,12 @@ const TaskAction: React.FC<TaskActionProps> = ({ status, itemId }) => {
       // TASK ACTION: EDIT
       if (previousStatus === 'edit' && value === 'confirm') {
         const values = activeForm?.formRef?.current?.getFieldsValue()
+        const startDate = pareZoneFormat(values.range[0], 'MM-DD-YYYY')
+        dispatch({ type: 'SET_PICKEDDATE', pickedDate: startDate })
         ajax({
           url: '/api/task',
           method: 'PATCH',
-          data: { _id: itemId, ...values },
+          data: { _id: itemId, ...values, startDate },
           success(res, status) {
             dispatch({ type: 'TASK_EDIT', editedId: itemId, updatedValues: values })
           },

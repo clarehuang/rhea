@@ -18,6 +18,10 @@ const TaskSchema = new Schema({
     type: Array,
     required: true,
   },
+  startDate: {
+    type: String,
+    required: false,
+  },
   tag: {
     type: String,
   },

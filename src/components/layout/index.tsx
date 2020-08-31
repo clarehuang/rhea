@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useState, useEffect } from 'react'
 import { Layout as AntdLayout } from 'antd'
 import { useSelector, useDispatch } from 'react-redux'
 import { SiderMenu } from './siderMenu/siderMenu'
@@ -12,6 +12,14 @@ interface LayoutProps {
 }
 
 const Layout: React.FC<LayoutProps> = ({ Comp }) => {
+  const { pickedDate } = useSelector((state) => state)
+  const [value, setValue] = useState(
+    pickedDate === moment().format('MM-DD-YYYY') ? moment() : moment(pickedDate)
+  )
+  useEffect(() => {
+    setValue(moment(pickedDate))
+  }, [pickedDate])
+
   const dispatch = useDispatch()
   const handleSelect = (date: any) => {
     const pickedDate = moment(date._d).format('MM-DD-YYYY')
@@ -22,6 +30,8 @@ const Layout: React.FC<LayoutProps> = ({ Comp }) => {
       <SiderMenu />
       <div className="calendar-cover">
         <Calendar
+          defaultValue={moment()}
+          value={value}
           imgUrl="https://images.pexels.com/photos/3049121/pexels-photo-3049121.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=750&w=1260"
           onSelect={handleSelect}
         />
