@@ -1,17 +1,18 @@
 import React from 'react'
-import { Calendar as AntCalendar, Row, Col } from 'antd'
+import { useDispatch } from 'react-redux'
+import { Calendar as AntCalendar, Row } from 'antd'
 import './calendar.less'
 import clsx from 'clsx'
 import { useI18n } from 'react-simple-i18n'
-import { Moment } from 'moment'
+import moment from 'moment'
 
 interface CalendarProps {
   imgUrl: string
   onPanelChange?: (value: object, mode: string) => void
   onSelect?: (date: object) => void
   className?: string
-  defaultValue?: Moment
-  value?: Moment
+  defaultValue?: moment.Moment
+  value?: moment.Moment
 }
 const Calendar: React.FC<CalendarProps> = ({
   defaultValue,
@@ -23,25 +24,13 @@ const Calendar: React.FC<CalendarProps> = ({
   ...props
 }) => {
   const { t } = useI18n()
-  const today = new Date()
-  const dd = String(today.getDate()).padStart(2, '0')
-  const mm = today.getMonth()
-  const day = today.getDay()
-  const months = [
-    'Jan',
-    'Feb',
-    'Mar',
-    'Apr',
-    'May',
-    'Jun',
-    'Jul',
-    'Aug',
-    'Sep',
-    'Oct',
-    'Nov',
-    'Dec',
-  ]
-  const weeks = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday']
+  const dispatch = useDispatch()
+
+  const today = moment().local()
+  const dd = today.format('DD')
+  const mm = today.format('MMM')
+  const day = today.format('dddd')
+
   const handlePanelChange = (value: object, mode: string): void => {
     onPanelChange?.(value, mode)
   }
@@ -49,15 +38,30 @@ const Calendar: React.FC<CalendarProps> = ({
     onSelect?.(date)
   }
 
+  const handlePickDate = (e: React.MouseEvent | React.KeyboardEvent): void => {
+    if (
+      e.nativeEvent instanceof MouseEvent ||
+      (e.nativeEvent instanceof KeyboardEvent && e.nativeEvent.keyCode === 32)
+    ) {
+      dispatch({ type: 'SET_PICKEDDATE', pickedDate: today.format('MM-DD-YYYY') })
+    }
+  }
+
   return (
     <div className={clsx('calendar', className)} {...props}>
-      <div className="calendar-today">
+      <div
+        className="calendar-today"
+        onClick={handlePickDate}
+        onKeyDown={handlePickDate}
+        role="button"
+        tabIndex={0}
+      >
         <Row className="date">
-          <h5 className="month">{months[mm]}</h5>
+          <h5 className="month">{mm}</h5>
           <h1>{dd}</h1>
         </Row>
         <Row className="week">
-          <h5>{weeks[day]}</h5>
+          <h5>{day}</h5>
         </Row>
       </div>
       <div className="cover">

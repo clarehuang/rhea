@@ -1,3 +1,5 @@
+@import '../../styles/variables.less';
+
 @cover-max-width: 25rem;
 @cover-width: 37.5%;
 @calendar-font-size: 0.875rem;
@@ -22,11 +24,13 @@
   }
   .calendar-today{
     position: absolute;
+    padding: 0.5rem;
     right: 0;
     width: 10rem;
     z-index: 1;
     display: flex;
     flex-wrap: wrap;
+    cursor: pointer;
     h1{
       font-size: @calendar-today-large-font-size;
       color: white;
@@ -52,6 +56,11 @@
       flex: 1 0 100%;
       display: block;
       font-size: @calendar-today-small-font-size;
+    }
+    &:focus{
+      box-shadow: 0 0 0 3px rgba(0, 0, 0, 0.125);
+      border:solid 1px var(--color-gray-500);
+      outline: none;
     }
     @media only screen and (max-width: 768px) {
       display: none;

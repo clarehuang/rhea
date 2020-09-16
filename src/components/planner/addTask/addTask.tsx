@@ -52,6 +52,7 @@ const AddTask: React.FC<AddTaskProps> = ({ selectedTagColor = Tags['home'][1], o
           : fieldsValue['des'],
       status: 'default',
     }
+    console.log(values)
     const startDate = pareZoneFormat(values.range[0], 'MM-DD-YYYY')
     dispatch({ type: 'SET_PICKEDDATE', pickedDate: startDate })
     formRef?.current.resetFields()
@@ -83,6 +84,7 @@ const AddTask: React.FC<AddTaskProps> = ({ selectedTagColor = Tags['home'][1], o
     console.log('check tag ', value)
     setTagColorPicked(Tags[value][1])
   }
+  const [textareaValue, setTextareaValue] = useState()
 
   return (
     <Form
@@ -116,6 +118,10 @@ const AddTask: React.FC<AddTaskProps> = ({ selectedTagColor = Tags['home'][1], o
           placeholder="Description"
           autoSize={{ minRows: 5, maxRows: 8 }}
           className="task-des"
+          onPressEnter={(e) => {
+            console.log('press enter', e.currentTarget.value)
+          }}
+          value={textareaValue}
         />
       </Form.Item>
       <Form.Item name="tag" style={{ width: '40%' }} {...taskFormConfig.tag}>

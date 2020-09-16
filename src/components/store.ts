@@ -4,7 +4,7 @@ import moment from 'moment'
 // eslint-disable-next-line @typescript-eslint/explicit-function-return-type
 function reducer(
   state = {
-    pickedDate: moment().format('MM-DD-YYYY'),
+    pickedDate: moment().local().format('MM-DD-YYYY'),
     tasks: [],
     blogs: [],
     activeForm: {},

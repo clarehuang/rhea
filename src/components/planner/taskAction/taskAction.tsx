@@ -22,7 +22,9 @@ const TaskAction: React.FC<TaskActionProps> = ({ status, itemId }) => {
   const { activeForm, activeStatus } = useSelector((state) => state)
   const dispatch = useDispatch()
   const currentStatus =
-    activeStatus?.value === null || typeof activeStatus?.value === 'undefined'
+    activeStatus?.value === null ||
+    typeof activeStatus?.value === 'undefined' ||
+    activeStatus?.value.length === 0
       ? status
       : activeStatus?.value
   let previousStatus = ''
