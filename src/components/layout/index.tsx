@@ -17,7 +17,7 @@ const Layout: React.FC<LayoutProps> = ({ Comp }) => {
     pickedDate === moment().format('MM-DD-YYYY') ? moment() : moment(pickedDate)
   )
   useEffect(() => {
-    setValue(moment(pickedDate))
+    setValue(moment(pickedDate, 'MM-DD-YYYY'))
   }, [pickedDate])
 
   const dispatch = useDispatch()
@@ -25,6 +25,7 @@ const Layout: React.FC<LayoutProps> = ({ Comp }) => {
     const pickedDate = moment(date._d).format('MM-DD-YYYY')
     dispatch({ type: 'SET_PICKEDDATE', pickedDate })
   }
+
   return (
     <div className="layout">
       <SiderMenu />

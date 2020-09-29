@@ -54,7 +54,11 @@ const TaskTimeline: React.FC<TaskTimelineProps> = ({ filterValue }) => {
               >
                 <h3>{item.title}</h3>
                 <p style={{ whiteSpace: 'pre-line' }}>{item.des}</p>
-                <a href="/planner" className="text-info">
+                <a
+                  href={item.location ? `http://maps.google.com/?q=${item.location}` : null}
+                  target="blank"
+                  className="text-info"
+                >
                   <EnvironmentOutlined style={{ marginRight: '0.5rem' }} />
                   {item.location}
                 </a>
