@@ -1,9 +1,9 @@
 module.exports = {
   'en': {
     nav: {
-      planner: 'PLANNR',
-      journal: 'JOURNAL',
-      settings: 'SETTINGS',
+      todo: 'TODO',
+      stories: 'STORIES',
+      profile: 'PROFILE',
       language: 'ENGLISH/中文',
     },
     alt:{
@@ -13,9 +13,9 @@ module.exports = {
   },
   'zh-TW': {
     nav: {
-      planner: '規劃',
-      journal: '日記',
-      settings: '設定',
+      todo: '備忘錄',
+      stories: '故事',
+      profile: '個人主頁',
       language: 'ENGLISH/中文',
     },
     alt:{
@@ -24,3 +24,5 @@ module.exports = {
     },
   },
 }
+
+

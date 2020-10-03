@@ -4,7 +4,7 @@ import { PlusOutlined } from '@ant-design/icons'
 import { AddTask, TagFilter, Tags, TaskTimeline } from './index'
 import './planner.less'
 
-const Planner = (): JSX.Element => {
+const Todo = (): JSX.Element => {
   const [visible, isVisible] = useState(false)
   const [tag, setTag] = useState('all')
   const content = (
@@ -38,4 +38,4 @@ const Planner = (): JSX.Element => {
   )
 }
 
-export default Planner
+export default Todo

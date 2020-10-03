@@ -5,9 +5,9 @@ import { createI18n, I18nProvider } from 'react-simple-i18n'
 import { Provider } from 'react-redux'
 import { Layout as AntLayout } from 'antd'
 import { I18nType } from '../utils/i18n-langs'
-import Planner from './planner/planner'
-import Journal from './journal/journal'
-import Settings from './settings/settings'
+import Todo from './todo/todo'
+import Stories from './stories/stories'
+import Profile from './profile/profile'
 import Register from './register/register'
 import { Layout } from './layout/index'
 
@@ -48,20 +48,16 @@ const App: React.SFC<AppProps> = ({
                   path="/"
                   component={(): JSX.Element => <h1>This is the Home Page</h1>}
                 />
+                <Route exact path="/todo" component={(): JSX.Element => <Layout Comp={Todo} />} />
                 <Route
                   exact
-                  path="/planner"
-                  component={(): JSX.Element => <Layout Comp={Planner} />}
+                  path="/stories"
+                  component={(): JSX.Element => <Layout Comp={Stories} />}
                 />
                 <Route
                   exact
-                  path="/journal"
-                  component={(): JSX.Element => <Layout Comp={Journal} />}
-                />
-                <Route
-                  exact
-                  path="/settings"
-                  component={(): JSX.Element => <Layout Comp={Settings} />}
+                  path="/profile"
+                  component={(): JSX.Element => <Layout Comp={Profile} />}
                 />
                 <Route exact path="/register" component={Register} />
               </Switch>

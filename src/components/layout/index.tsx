@@ -22,6 +22,7 @@ const Layout: React.FC<LayoutProps> = ({ Comp }) => {
 
   const dispatch = useDispatch()
   const handleSelect = (date: any) => {
+    console.log(typeof date)
     const pickedDate = moment(date._d).format('MM-DD-YYYY')
     dispatch({ type: 'SET_PICKEDDATE', pickedDate })
   }
