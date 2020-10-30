@@ -6,7 +6,7 @@ import { TaskAction } from '../index'
 import { TaskData } from '../../type'
 import EditTask from '../editTask/editTask'
 import clsx from 'clsx'
-import ajax from '../../../client/utils/ajax'
+import { loadTasks } from '../../../action/task'
 import { localTimezone } from '../../../client/utils'
 import moment from 'moment'
 
@@ -16,9 +16,11 @@ interface TaskTimelineProps {
 }
 
 const TaskTimeline: React.FC<TaskTimelineProps> = ({ filterValue }) => {
-  const { tasks, activeStatus, pickedDate } = useSelector((state) => state)
+  const tasks = useSelector((state) => state.tasks)
+  const activeStatus = useSelector((state) => state.activeStatus)
+  const pickedDate = useSelector((state) => state.pickedDate)
+  const isLoadingTasks = useSelector((state) => state.isLoadingTasks)
   const dispatch = useDispatch()
-  const [isLoading, setLoading] = useState(false)
 
   const RenderTimeline = (items: TaskData, filterTagValue: string): React.ReactNode => {
     return items.map((item, index: number) => {
@@ -71,33 +73,9 @@ const TaskTimeline: React.FC<TaskTimelineProps> = ({ filterValue }) => {
     })
   }
   useEffect(() => {
-    setLoading(true)
-    ajax({
-      url: '/api/task',
-      method: 'GET',
-      data: {},
-      query: { pickedDate },
-      success(res, status) {
-        setLoading(false)
-        const tasks = res as Array<object>
-        dispatch({ type: 'TASK_GET', allTasks: tasks })
-
-        // TODO: add new tag color
-        // for (let i = 0; i < Object.keys(Tags).length; i++) {
-        //   const key = Object.keys(Tags)[i]
-        //   const list = document.querySelectorAll(
-        //     `.task-${key} .ant-timeline-item-head.ant-timeline-item-head-blue`
-        //   )
-        //   list.forEach((item) => (item.style.backgroundColor = Tags[key][1]))
-        // }
-      },
-      fail(res, status) {
-        //TODO : finish fail action, indluding error handling
-        console.log('post task fails')
-      },
-    })
+    dispatch(loadTasks(pickedDate))
   }, [pickedDate])
-  if (isLoading) {
+  if (isLoadingTasks) {
     return (
       <h3>
         <LoadingOutlined style={{ marginRight: '1rem' }} />

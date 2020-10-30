@@ -21,6 +21,7 @@ module.exports = {
       semi: false,
       arrowParens: 'always',
       trailingComma: 'es5',
+      parser: flow,
     }],
     'arrow-parens': [2, 'always'],
     camelcase: [2, { properties: 'never' }],

@@ -28,9 +28,22 @@ function reducer(
         ...state,
         activeStatus: { value: action.statusValue, _id: action._id },
       }
-    case 'TASK_GET':
+    case 'LOAD_TASK_START':
       return {
         ...state,
+        tasks: null,
+        isLoadingTasks: true,
+      }
+    case 'LOAD_TASK_FAIL':
+      return {
+        ...state,
+        tasks: null,
+        isLoadingTasks: false,
+      }
+    case 'LOAD_TASK_SUCCESS':
+      return {
+        ...state,
+        isLoadingTasks: false,
         tasks: action.allTasks.sort(function (a, b) {
           return (
             parseInt(moment(localTimezone(a.range[0])).format('X')) -
