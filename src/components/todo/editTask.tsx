@@ -4,10 +4,10 @@ import { FormInstance } from 'antd/lib/form'
 import { useSelector, useDispatch } from 'react-redux'
 import moment from 'moment'
 import clsx from 'clsx'
-import { localTimezone } from '../../../client/utils'
-import { Tags } from '../index'
-import { Task } from '../../type'
-import { taskFormConfig } from '../config'
+import { localTimezone } from '../../client/utils'
+import { Tags } from './todo'
+import { Task } from '../type'
+import { taskFormConfig } from './config'
 
 const { RangePicker } = DatePicker
 

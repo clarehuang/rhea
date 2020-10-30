@@ -26,3 +26,9 @@ export const loadTasks = (pickedDate) => {
     })
   }
 }
+
+// export const addTasks = () => {
+//   return (dispatch, getState, {ajax}) => {
+//     dispatch({ type: 'ADD_TASK_START' })
+//   }
+// }

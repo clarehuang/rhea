@@ -1,6 +1,6 @@
 import React, { useEffect } from 'react'
 import clsx from 'clsx'
-import { TagData } from '../../type'
+import { TagData } from '../type'
 
 interface TagFilterProps {
   tagData: TagData

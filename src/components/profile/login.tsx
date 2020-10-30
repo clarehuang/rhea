@@ -12,7 +12,7 @@ const tailLayout = {
 
 type AccountType = { username: string; password: string }
 
-const Register = () => {
+const Login = () => {
   const onFinish = ({ username, password }: AccountType) => {
     ajax({
       url: '/api/user/register',
@@ -38,7 +38,7 @@ const Register = () => {
 
   return (
     <div>
-      <h1>Register</h1>
+      <h1>Login</h1>
       <Form
         {...layout}
         name="basic"
@@ -77,4 +77,4 @@ const Register = () => {
   )
 }
 
-export default Register
+export default Login

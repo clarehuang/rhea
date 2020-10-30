@@ -9,9 +9,9 @@ import {
   CloseCircleOutlined,
 } from '@ant-design/icons'
 import { useSelector, useDispatch } from 'react-redux'
-import { pareZoneFormat } from '../../../client/utils'
+import { pareZoneFormat } from '../../client/utils'
 import clsx from 'clsx'
-import ajax from '../../../client/utils/ajax'
+import ajax from '../../client/utils/ajax'
 
 interface TaskActionProps {
   status?: string

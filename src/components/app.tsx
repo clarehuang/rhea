@@ -8,7 +8,7 @@ import { I18nType } from '../utils/i18n-langs'
 import Todo from './todo/todo'
 import Stories from './stories/stories'
 import Profile from './profile/profile'
-import Register from './register/register'
+import Register from './profile/register'
 import { Layout } from './layout/index'
 
 import './main.less'

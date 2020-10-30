@@ -1,13 +1,13 @@
 import React, { useEffect, useState, useRef, CSSProperties } from 'react'
 import { Form, Input, Button, Row, Select, DatePicker } from 'antd'
 import { useDispatch } from 'react-redux'
-import { pareZoneFormat } from '../../../client/utils'
+import { pareZoneFormat } from '../../client/utils'
 import { FormInstance } from 'antd/lib/form'
 import { Store } from 'antd/lib/form/interface'
-import { Tags } from '../index'
-import { Task } from '../../type'
-import { taskFormConfig } from '../config'
-import ajax from '../../../client/utils/ajax'
+import { Tags } from './todo'
+import { Task } from '../type'
+import { taskFormConfig } from './config'
+import ajax from '../../client/utils/ajax'
 
 const { RangePicker } = DatePicker
 

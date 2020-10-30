@@ -1,8 +1,20 @@
 import React, { useState } from 'react'
 import { Button, Popover } from 'antd'
 import { PlusOutlined } from '@ant-design/icons'
-import { AddTask, TagFilter, Tags, TaskTimeline } from './index'
-import './planner.less'
+import { default as AddTask } from './addTask'
+import { default as TagFilter } from './tagFilter'
+import { default as TaskTimeline } from './taskTimeline'
+import { TagData } from '../type'
+import './todo.less'
+
+//TODO: replace with tag dataset
+export const Tags: TagData = {
+  all: ['All', '#d7d7d7'],
+  home: ['Home', '#a11a0f'],
+  work: ['Work', '#dc833c'],
+  finance: ['Finance', '#49af99'],
+  other: ['Other', '#4a413f'],
+}
 
 const Todo = (): JSX.Element => {
   const [visible, isVisible] = useState(false)
