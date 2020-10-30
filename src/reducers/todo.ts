@@ -1,4 +1,4 @@
-import { localTimezone } from '../client/utils'
+import { localTimezone } from '../client/utils/utils'
 import moment from 'moment'
 
 // eslint-disable-next-line @typescript-eslint/explicit-function-return-type
@@ -51,7 +51,15 @@ function reducer(
           )
         }),
       }
-    case 'TASK_ADD':
+    case 'ADD_TASK_START':
+      return {
+        ...state,
+      }
+    case 'ADD_TASK_FAIL':
+      return {
+        ...state,
+      }
+    case 'ADD_TASK_SUCCESS':
       return {
         ...state,
         tasks: [...state.tasks, action.task].sort(function (a, b) {

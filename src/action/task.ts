@@ -1,3 +1,5 @@
+import { Task } from "components/type"
+
 export const loadTasks = (pickedDate) => {
   return (dispatch, getState, { ajax }) => {
     dispatch({ type: 'LOAD_TASK_START' })
@@ -27,8 +29,25 @@ export const loadTasks = (pickedDate) => {
   }
 }
 
-// export const addTasks = () => {
-//   return (dispatch, getState, {ajax}) => {
-//     dispatch({ type: 'ADD_TASK_START' })
-//   }
-// }
+export const addTasks = (values, startDate) => {
+  return (dispatch, getState, { ajax }) => {
+    dispatch({ type: 'ADD_TASK_START' })
+    ajax({
+      url: '/api/task',
+      method: 'POST',
+      data: { ...values, startDate },
+      success(res, status) {
+        //TODO : finish success action, indluding redirect to home page
+        const obj = res as Task
+        dispatch({
+          type: 'ADD_TASK_SUCCESS',
+          task: { ...values, _id: obj._id, __v: obj.__v },
+        })
+      },
+      fail(res, status) {
+        //TODO : finish fail action, indluding error handling
+        dispatch({ type: 'ADD_TASK_FAIL' })
+      },
+    })
+  }
+}

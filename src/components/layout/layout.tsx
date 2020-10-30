@@ -1,8 +1,8 @@
 import React, { useState, useEffect } from 'react'
 import { Layout as AntdLayout } from 'antd'
 import { useSelector, useDispatch } from 'react-redux'
-import { SiderMenu } from './siderMenu/siderMenu'
-import { Calendar } from './calendar/calendar'
+import { SiderMenu } from './siderMenu'
+import { Calendar } from './calendar'
 import './layout.less'
 import moment from 'moment'
 

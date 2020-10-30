@@ -1,12 +1,13 @@
 import React, { useEffect, useState, useRef, CSSProperties } from 'react'
 import { Form, Input, Button, Row, Select, DatePicker } from 'antd'
 import { useDispatch } from 'react-redux'
-import { pareZoneFormat } from '../../client/utils'
+import { pareZoneFormat } from '../../client/utils/utils'
 import { FormInstance } from 'antd/lib/form'
 import { Store } from 'antd/lib/form/interface'
 import { Tags } from './todo'
 import { Task } from '../type'
 import { taskFormConfig } from './config'
+import { addTasks } from '../../action/task'
 import ajax from '../../client/utils/ajax'
 
 const { RangePicker } = DatePicker
@@ -57,23 +58,7 @@ const AddTask: React.FC<AddTaskProps> = ({ selectedTagColor = Tags['home'][1], o
     dispatch({ type: 'SET_PICKEDDATE', pickedDate: startDate })
     formRef?.current.resetFields()
     onOpen?.(false)
-    ajax({
-      url: '/api/task',
-      method: 'POST',
-      data: { ...values, startDate },
-      success(res, status) {
-        //TODO : finish success action, indluding redirect to home page
-        const obj = res as Task
-        dispatch({
-          type: 'TASK_ADD',
-          task: { ...values, _id: obj._id, __v: obj.__v },
-        })
-      },
-      fail(res, status) {
-        //TODO : finish fail action, indluding error handling
-        console.log('post task fails')
-      },
-    })
+    dispatch(addTasks(values, startDate))
     setTagColorPicked(Tags[formRef?.current.getFieldsValue().tag][1])
   }
   const handleFinishFailed = (errorInfo: object) => {

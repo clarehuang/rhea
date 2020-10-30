@@ -7,7 +7,7 @@ import { TaskData } from '../type'
 import EditTask from './editTask'
 import clsx from 'clsx'
 import { loadTasks } from '../../action/task'
-import { localTimezone } from '../../client/utils'
+import { localTimezone } from '../../client/utils/utils'
 import moment from 'moment'
 
 interface TaskTimelineProps {
