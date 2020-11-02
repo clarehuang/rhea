@@ -51,3 +51,58 @@ export const addTasks = (values, startDate) => {
     })
   }
 }
+
+export const deleteTasks = (itemId) => {
+  return  (dispatch, getState, { ajax }) => {
+    dispatch({ type: 'DELETE_TASK_START' })
+    ajax({
+      url: '/api/task',
+      method: 'DELETE',
+      data: { _id: itemId },
+      success(res, status) {
+        dispatch({ type: 'DELETE_TASK_SUCCESS' })
+      },
+      fail(res, status) {
+        //TODO : finish fail action, indluding error handling
+        console.log(res)
+        dispatch({ type: 'DELETE_TASK_FAIL' })
+      },
+    })
+  }
+}
+
+export const editTasks = (itemId, values, startDate) => {
+  return  (dispatch, getState, { ajax }) => {
+    dispatch({ type: 'EDIT_TASK_START' })
+    ajax({
+      url: '/api/task',
+      method: 'PATCH',
+      data: { _id: itemId, ...values, startDate },
+      success(res, status) {
+        dispatch({ type: 'EDIT_TASK_SUCCESS', editedId: itemId, updatedValues: values })
+      },
+      fail(res, status) {
+        //TODO : finish fail action, indluding error handling
+        dispatch({ type: 'EDIT_TASK_FAIL' })
+      },
+    })
+  }
+}
+
+export const checkTasks = ( itemId, currentStatus )=> {
+  return (dispatch, getState, { ajax }) => {
+    dispatch({ type: 'CHECK_TASK_START' })
+    ajax({
+      url: '/api/task',
+      method: 'PATCH',
+      data: { _id: itemId, status: `${currentStatus === 'check' ? 'default' : 'check'}` },
+      success(res, status) {
+        dispatch({ type: 'CHECK_TASK_SUCCESS', checkedID: itemId })
+      },
+      fail(res, status) {
+        //TODO : finish fail action, indluding error handling
+        dispatch({ type: 'CHECK_TASK_FAIL' })
+      },
+    })
+  }
+}

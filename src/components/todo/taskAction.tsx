@@ -12,6 +12,7 @@ import { useSelector, useDispatch } from 'react-redux'
 import { pareZoneFormat } from '../../client/utils/utils'
 import clsx from 'clsx'
 import ajax from '../../client/utils/ajax'
+import { deleteTasks, editTasks, checkTasks } from '../../action/task'
 
 interface TaskActionProps {
   status?: string
@@ -19,7 +20,8 @@ interface TaskActionProps {
 }
 
 const TaskAction: React.FC<TaskActionProps> = ({ status, itemId }) => {
-  const { activeForm, activeStatus } = useSelector((state) => state)
+  const activeForm = useSelector((state) => state.activeForm)
+  const activeStatus = useSelector((state) => state.activeStatus)
   const dispatch = useDispatch()
   const currentStatus =
     activeStatus?.value === null ||
@@ -44,53 +46,19 @@ const TaskAction: React.FC<TaskActionProps> = ({ status, itemId }) => {
       // TASK ACTION: DELETE
       if (previousStatus === 'delete' && value === 'confirm') {
         document.getElementById(itemId).remove()
-        ajax({
-          url: '/api/task',
-          method: 'DELETE',
-          data: { _id: itemId },
-          success(res, status) {
-            console.log('delete task succeeds')
-          },
-          fail(res, status) {
-            //TODO : finish fail action, indluding error handling
-            console.log(res)
-            console.log('delete task fails')
-          },
-        })
+        dispatch(deleteTasks(itemId))
       }
       // TASK ACTION: EDIT
       if (previousStatus === 'edit' && value === 'confirm') {
         const values = activeForm?.formRef?.current?.getFieldsValue()
         const startDate = pareZoneFormat(values.range[0], 'MM-DD-YYYY')
         dispatch({ type: 'SET_PICKEDDATE', pickedDate: startDate })
-        ajax({
-          url: '/api/task',
-          method: 'PATCH',
-          data: { _id: itemId, ...values, startDate },
-          success(res, status) {
-            dispatch({ type: 'TASK_EDIT', editedId: itemId, updatedValues: values })
-          },
-          fail(res, status) {
-            //TODO : finish fail action, indluding error handling
-            console.log('edit task fails')
-          },
-        })
+        dispatch(editTasks(itemId, values, startDate))
         dispatch({ type: 'SET_ACTIVEFORM', id: null, ref: null })
       }
       // TASK ACTION: CHECK
       if (value === 'check' || value === 'undo') {
-        ajax({
-          url: '/api/task',
-          method: 'PATCH',
-          data: { _id: itemId, status: `${currentStatus === 'check' ? 'default' : 'check'}` },
-          success(res, status) {
-            dispatch({ type: 'TASK_CHECK', checkedID: itemId })
-          },
-          fail(res, status) {
-            //TODO : finish fail action, indluding error handling
-            console.log('check task fails')
-          },
-        })
+        dispatch(checkTasks( itemId, currentStatus ))
       }
       // TASK ACTION: CANCEl, RETURN DEFAULT
       if (

@@ -5,10 +5,8 @@ import { pareZoneFormat } from '../../client/utils/utils'
 import { FormInstance } from 'antd/lib/form'
 import { Store } from 'antd/lib/form/interface'
 import { Tags } from './todo'
-import { Task } from '../type'
 import { taskFormConfig } from './config'
 import { addTasks } from '../../action/task'
-import ajax from '../../client/utils/ajax'
 
 const { RangePicker } = DatePicker
 
@@ -24,7 +22,6 @@ const { Option } = Select
 const { TextArea } = Input
 const AddTask: React.FC<AddTaskProps> = ({ selectedTagColor = Tags['home'][1], onOpen }) => {
   const dispatch = useDispatch()
-
   const formRef: React.Ref<FormInstance> = useRef(null)
   const [tagColorPicked, setTagColorPicked] = useState(selectedTagColor)
   useEffect(() => {

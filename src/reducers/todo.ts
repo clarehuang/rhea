@@ -6,7 +6,7 @@ function reducer(
   state = {
     pickedDate: moment().local().format('MM-DD-YYYY'),
     tasks: [],
-    blogs: [],
+    stories: [],
     activeForm: {},
     activeStatus: { value: '', _id: '' },
   },
@@ -34,12 +34,6 @@ function reducer(
         tasks: null,
         isLoadingTasks: true,
       }
-    case 'LOAD_TASK_FAIL':
-      return {
-        ...state,
-        tasks: null,
-        isLoadingTasks: false,
-      }
     case 'LOAD_TASK_SUCCESS':
       return {
         ...state,
@@ -51,11 +45,13 @@ function reducer(
           )
         }),
       }
-    case 'ADD_TASK_START':
+    case 'LOAD_TASK_FAIL':
       return {
         ...state,
-      }
-    case 'ADD_TASK_FAIL':
+        tasks: null,
+        isLoadingTasks: false,
+      }      
+    case 'ADD_TASK_START':
       return {
         ...state,
       }
@@ -69,9 +65,27 @@ function reducer(
           )
         }),
       }
-    case 'TASK_DELETE':
-      return { ...state }
-    case 'TASK_CHECK': {
+    case 'ADD_TASK_FAIL':
+    return {
+      ...state,
+    }
+    case 'DELETE_TASK_START':
+      return { 
+        ...state 
+      }
+    case 'DELETE_TASK_SUCCESS':
+      return {
+        ...state 
+      }
+    case 'DELETE_TASK_FAIL':
+      return { 
+        ...state 
+      }
+    case 'CHECK_TASK_START':
+      return { 
+        ...state 
+      }
+    case 'CHECK_TASK_SUCCESS': {
       const checkedTaskIndex = state.tasks.findIndex(({ _id }) => _id === action.checkedID)
       state.tasks[checkedTaskIndex].status =
         state.tasks[checkedTaskIndex].status === 'default' ? 'check' : 'default'
@@ -80,7 +94,15 @@ function reducer(
         tasks: [...state.tasks],
       }
     }
-    case 'TASK_EDIT': {
+    case 'CHECK_TASK_FAIL':
+      return { 
+        ...state 
+      }
+    case 'EDIT_TASK_START':
+      return { 
+        ...state 
+      }
+    case 'EDIT_TASK_SUCCESS': {
       const editedTaskIndex = state.tasks.findIndex(({ _id }) => _id === action.editedId)
       state.tasks[editedTaskIndex] = Object.assign(
         state.tasks[editedTaskIndex],
@@ -97,6 +119,10 @@ function reducer(
         tasks: [...state.tasks],
       }
     }
+    case 'EDIT_TASK_FAIL':
+      return { 
+        ...state 
+      }
     default:
       return state
   }

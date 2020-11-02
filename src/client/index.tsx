@@ -15,7 +15,7 @@ const store = createStore(
   {
     pickedDate: moment().format('MM-DD-YYYY'),
     tasks: [],
-    blogs: [],
+    stories: [],
     activeForm: {},
     activeStatus: { value: '', _id: '' },
   },
