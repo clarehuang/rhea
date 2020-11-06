@@ -48,4 +48,13 @@ router.delete('/', (req, res, next) => {
   })
 })
 
+router.get('/calendar', (req, res, next)=>{
+  Task.find().exec((err, data) => {
+    if (err) {
+      return res.status(400).send(data).end()
+    }
+    res.status(200).send(data).end()
+  })
+})
+
 module.exports = router

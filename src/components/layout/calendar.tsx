@@ -1,10 +1,15 @@
-import React from 'react'
+import React, { useEffect } from 'react'
 import { useDispatch } from 'react-redux'
 import { Calendar as AntCalendar, Row } from 'antd'
 import './calendar.less'
 import clsx from 'clsx'
 import { useI18n } from 'react-simple-i18n'
+import { TaskData } from '../type'
+import { loadTasks } from '../../action/task'
 import moment from 'moment'
+import ajax from '../../client/utils/ajax'
+
+
 
 interface CalendarProps {
   imgUrl: string
@@ -46,6 +51,28 @@ const Calendar: React.FC<CalendarProps> = ({
       dispatch({ type: 'SET_PICKEDDATE', pickedDate: today.format('MM-DD-YYYY') })
     }
   }
+
+  useEffect(()=>{
+    ajax({
+      url: '/api/task/calendar',
+      method: 'GET',
+      data: {},
+      query: {},
+      success(res, status) {
+        const tasks = res as TaskData
+        const markedDates = []
+        tasks.forEach(item =>{
+          markedDates.push(moment(item.range[0]).format('YYYY-MM-DD'))
+        })
+        console.log('getting res from calendar ', markedDates)
+        // dispatch({ type: 'LOAD_TASK_SUCCESS', allTasks: tasks })
+      },
+      fail(res, status) {
+        //TODO : finish fail action, indluding error handling
+        // dispatch({ type: 'LOAD_TASK_FAIL' })
+      },
+    })
+  })
 
   return (
     <div className={clsx('calendar', className)} {...props}>
