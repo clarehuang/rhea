@@ -1,10 +1,9 @@
 import { localTimezone } from '../client/utils/utils'
 import moment from 'moment'
 
-// eslint-disable-next-line @typescript-eslint/explicit-function-return-type
 function reducer(
   state = {
-    pickedDate: moment().local().format('MM-DD-YYYY'),
+    pickedDate: moment().local().format('YYYY-MM-DD'),
     tasks: [],
     stories: [],
     activeForm: {},
@@ -31,14 +30,14 @@ function reducer(
     case 'LOAD_TASK_START':
       return {
         ...state,
-        tasks: null,
+        tasks: [...state.tasks],
         isLoadingTasks: true,
       }
     case 'LOAD_TASK_SUCCESS':
       return {
         ...state,
         isLoadingTasks: false,
-        tasks: action.allTasks.sort(function (a, b) {
+        tasks: action.allTasks.sort((a, b) => {
           return (
             parseInt(moment(localTimezone(a.range[0])).format('X')) -
             parseInt(moment(localTimezone(b.range[0])).format('X'))
@@ -48,9 +47,9 @@ function reducer(
     case 'LOAD_TASK_FAIL':
       return {
         ...state,
-        tasks: null,
+        tasks: [],
         isLoadingTasks: false,
-      }      
+      }
     case 'ADD_TASK_START':
       return {
         ...state,
@@ -58,7 +57,7 @@ function reducer(
     case 'ADD_TASK_SUCCESS':
       return {
         ...state,
-        tasks: [...state.tasks, action.task].sort(function (a, b) {
+        tasks: [...state.tasks, action.task].sort((a, b) => {
           return (
             parseInt(moment(localTimezone(a.range[0])).format('X')) -
             parseInt(moment(localTimezone(b.range[0])).format('X'))
@@ -66,24 +65,24 @@ function reducer(
         }),
       }
     case 'ADD_TASK_FAIL':
-    return {
-      ...state,
-    }
+      return {
+        ...state,
+      }
     case 'DELETE_TASK_START':
-      return { 
-        ...state 
+      return {
+        ...state,
       }
     case 'DELETE_TASK_SUCCESS':
       return {
-        ...state 
+        ...state,
       }
     case 'DELETE_TASK_FAIL':
-      return { 
-        ...state 
+      return {
+        ...state,
       }
     case 'CHECK_TASK_START':
-      return { 
-        ...state 
+      return {
+        ...state,
       }
     case 'CHECK_TASK_SUCCESS': {
       const checkedTaskIndex = state.tasks.findIndex(({ _id }) => _id === action.checkedID)
@@ -95,12 +94,12 @@ function reducer(
       }
     }
     case 'CHECK_TASK_FAIL':
-      return { 
-        ...state 
+      return {
+        ...state,
       }
     case 'EDIT_TASK_START':
-      return { 
-        ...state 
+      return {
+        ...state,
       }
     case 'EDIT_TASK_SUCCESS': {
       const editedTaskIndex = state.tasks.findIndex(({ _id }) => _id === action.editedId)
@@ -108,7 +107,7 @@ function reducer(
         state.tasks[editedTaskIndex],
         action.updatedValues
       )
-      state.tasks.sort(function (a, b) {
+      state.tasks.sort((a, b) => {
         return (
           parseInt(moment(localTimezone(a.range[0])).format('X')) -
           parseInt(moment(localTimezone(b.range[0])).format('X'))
@@ -120,8 +119,8 @@ function reducer(
       }
     }
     case 'EDIT_TASK_FAIL':
-      return { 
-        ...state 
+      return {
+        ...state,
       }
     default:
       return state

@@ -14,16 +14,16 @@ interface LayoutProps {
 const Layout: React.FC<LayoutProps> = ({ Comp }) => {
   const { pickedDate } = useSelector((state) => state)
   const [value, setValue] = useState(
-    pickedDate === moment().format('MM-DD-YYYY') ? moment() : moment(pickedDate)
+    pickedDate === moment().format('YYYY-MM-DD') ? moment() : moment(pickedDate)
   )
   useEffect(() => {
-    setValue(moment(pickedDate, 'MM-DD-YYYY'))
+    setValue(moment(pickedDate, 'YYYY-MM-DD'))
   }, [pickedDate])
 
   const dispatch = useDispatch()
   const handleSelect = (date: any) => {
     console.log(typeof date)
-    const pickedDate = moment(date._d).format('MM-DD-YYYY')
+    const pickedDate = moment(date._d).format('YYYY-MM-DD')
     dispatch({ type: 'SET_PICKEDDATE', pickedDate })
   }
 

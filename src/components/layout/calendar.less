@@ -163,7 +163,32 @@
         }
       }
     }
-
+    .__date__cell{
+      display: none;
+      &.__planned {
+        display: block;
+        position: relative;
+      }
+      &.__planned::after{
+        content: '';
+        display: block;
+        position: absolute;
+        width: 0.2rem;
+        height: 0.2rem;
+        border-radius: 50%;
+        background: var(--color-gray-700);
+        left: 50%;
+        transform: translate(-50%,0);
+        top: 0;
+        z-index: 1;
+        transition-duration: 0.25s;
+      }
+    }
+    .ant-picker-cell-today .__date__cell.__planned::after, .ant-picker-cell-selected .__date__cell.__planned::after{
+      top: 3.5px;
+      transition-duration: 0.25s;
+      background: #000000;
+    }
   }
   .ant-radio-button-wrapper-checked:not(.ant-radio-button-wrapper-disabled)::before {
     background-color: var(--color-gray-900);

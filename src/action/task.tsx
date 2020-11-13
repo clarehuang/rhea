@@ -1,4 +1,4 @@
-import { Task } from "components/type"
+import { Task } from 'components/type'
 
 export const loadTasks = (pickedDate) => {
   return (dispatch, getState, { ajax }) => {
@@ -53,7 +53,7 @@ export const addTasks = (values, startDate) => {
 }
 
 export const deleteTasks = (itemId) => {
-  return  (dispatch, getState, { ajax }) => {
+  return (dispatch, getState, { ajax }) => {
     dispatch({ type: 'DELETE_TASK_START' })
     ajax({
       url: '/api/task',
@@ -72,7 +72,7 @@ export const deleteTasks = (itemId) => {
 }
 
 export const editTasks = (itemId, values, startDate) => {
-  return  (dispatch, getState, { ajax }) => {
+  return (dispatch, getState, { ajax }) => {
     dispatch({ type: 'EDIT_TASK_START' })
     ajax({
       url: '/api/task',
@@ -89,7 +89,7 @@ export const editTasks = (itemId, values, startDate) => {
   }
 }
 
-export const checkTasks = ( itemId, currentStatus )=> {
+export const checkTasks = (itemId, currentStatus) => {
   return (dispatch, getState, { ajax }) => {
     dispatch({ type: 'CHECK_TASK_START' })
     ajax({

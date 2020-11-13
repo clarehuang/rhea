@@ -51,14 +51,14 @@ const TaskAction: React.FC<TaskActionProps> = ({ status, itemId }) => {
       // TASK ACTION: EDIT
       if (previousStatus === 'edit' && value === 'confirm') {
         const values = activeForm?.formRef?.current?.getFieldsValue()
-        const startDate = pareZoneFormat(values.range[0], 'MM-DD-YYYY')
+        const startDate = pareZoneFormat(values.range[0], 'YYYY-MM-DD')
         dispatch({ type: 'SET_PICKEDDATE', pickedDate: startDate })
         dispatch(editTasks(itemId, values, startDate))
         dispatch({ type: 'SET_ACTIVEFORM', id: null, ref: null })
       }
       // TASK ACTION: CHECK
       if (value === 'check' || value === 'undo') {
-        dispatch(checkTasks( itemId, currentStatus ))
+        dispatch(checkTasks(itemId, currentStatus))
       }
       // TASK ACTION: CANCEl, RETURN DEFAULT
       if (

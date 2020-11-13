@@ -13,7 +13,7 @@ import thunk from 'redux-thunk'
 const store = createStore(
   reducer,
   {
-    pickedDate: moment().format('MM-DD-YYYY'),
+    pickedDate: moment().format('YYYY-MM-DD'),
     tasks: [],
     stories: [],
     activeForm: {},

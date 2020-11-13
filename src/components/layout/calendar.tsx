@@ -1,15 +1,13 @@
-import React, { useEffect } from 'react'
-import { useDispatch } from 'react-redux'
+import React, { useEffect, useState } from 'react'
+import { useDispatch, useSelector } from 'react-redux'
 import { Calendar as AntCalendar, Row } from 'antd'
 import './calendar.less'
 import clsx from 'clsx'
 import { useI18n } from 'react-simple-i18n'
 import { TaskData } from '../type'
-import { loadTasks } from '../../action/task'
 import moment from 'moment'
 import ajax from '../../client/utils/ajax'
-
-
+import { Moment } from 'moment-timezone'
 
 interface CalendarProps {
   imgUrl: string
@@ -30,7 +28,7 @@ const Calendar: React.FC<CalendarProps> = ({
 }) => {
   const { t } = useI18n()
   const dispatch = useDispatch()
-
+  const tasks = useSelector((state) => state.tasks)
   const today = moment().local()
   const dd = today.format('DD')
   const mm = today.format('MMM')
@@ -39,7 +37,7 @@ const Calendar: React.FC<CalendarProps> = ({
   const handlePanelChange = (value: object, mode: string): void => {
     onPanelChange?.(value, mode)
   }
-  const handleSelecrt = (date: object): void => {
+  const handleSelect = (date: object): void => {
     onSelect?.(date)
   }
 
@@ -48,23 +46,36 @@ const Calendar: React.FC<CalendarProps> = ({
       e.nativeEvent instanceof MouseEvent ||
       (e.nativeEvent instanceof KeyboardEvent && e.nativeEvent.keyCode === 32)
     ) {
-      dispatch({ type: 'SET_PICKEDDATE', pickedDate: today.format('MM-DD-YYYY') })
+      dispatch({ type: 'SET_PICKEDDATE', pickedDate: today.format('YYYY-MM-DD') })
     }
   }
+  const pickedMonth = value.format('YYYY-MM') as string
 
-  useEffect(()=>{
+  const dateCellRender = (date: Moment): React.ReactNode => {
+    return <span className="__date__cell " />
+  }
+  const [statedDateCellRender, setDateCellRender] = useState<any>(() => dateCellRender)
+  useEffect(() => {
     ajax({
       url: '/api/task/calendar',
       method: 'GET',
       data: {},
-      query: {},
+      query: { pickedMonth },
       success(res, status) {
         const tasks = res as TaskData
-        const markedDates = []
-        tasks.forEach(item =>{
-          markedDates.push(moment(item.range[0]).format('YYYY-MM-DD'))
+        const plannedDates = []
+        tasks.forEach((item) => {
+          plannedDates.push(moment(item.range[0]).format('YYYY-MM-DD'))
         })
-        console.log('getting res from calendar ', markedDates)
+        setDateCellRender(() => (date: Moment): React.ReactNode => {
+          return (
+            <span
+              className={clsx('__date__cell ', {
+                __planned: plannedDates.includes(date.format('YYYY-MM-DD')),
+              })}
+            ></span>
+          )
+        })
         // dispatch({ type: 'LOAD_TASK_SUCCESS', allTasks: tasks })
       },
       fail(res, status) {
@@ -72,7 +83,7 @@ const Calendar: React.FC<CalendarProps> = ({
         // dispatch({ type: 'LOAD_TASK_FAIL' })
       },
     })
-  })
+  }, [tasks])
 
   return (
     <div className={clsx('calendar', className)} {...props}>
@@ -100,7 +111,8 @@ const Calendar: React.FC<CalendarProps> = ({
           value={value}
           fullscreen={false}
           onPanelChange={handlePanelChange}
-          onSelect={handleSelecrt}
+          onSelect={handleSelect}
+          dateCellRender={statedDateCellRender}
         />
       </div>
     </div>

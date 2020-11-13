@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useRef } from 'react'
+import React, { useEffect } from 'react'
 import { Timeline } from 'antd'
 import { EnvironmentOutlined, LoadingOutlined } from '@ant-design/icons'
 import { useSelector, useDispatch } from 'react-redux'
