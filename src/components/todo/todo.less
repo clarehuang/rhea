@@ -6,6 +6,7 @@
 @timeline-card-edit: #f0f0f0;
 @box-shadow: 0 3px 8px -6px rgba(0, 0, 0, 0.3), 0 0 8px 0 rgba(0, 0, 0, 0.08), 0 0 10px 3px rgba(0, 0, 0, 0.05);
 @box-shadow-edit: 0 3px 8px -6px rgba(0, 0, 0, 0.3), 0 0 8px 0 rgba(0, 0, 0, 0.08), 0 0 10px 3px rgba(0, 0, 0, 0.05);
+@task-timeline-default-container: 500px;
 
 .planner-container{
   .task-btn-sm{
@@ -139,7 +140,6 @@
   }
   @media only screen and (max-width: 768px){
     width: 100%;
-    min-width: 20rem;
   }
   .ant-timeline-item .ant-timeline-item-head.ant-timeline-item-head-blue{
     border-color:transparent;
@@ -277,4 +277,58 @@ li.task-timeline-li{
 }
 .task-other .ant-timeline-item-head.ant-timeline-item-head-blue{
   background-color: #4a413f;
+}
+
+// Task Timeline - default display
+.task-timeline__default.__container{
+  position: relative;
+  box-sizing: border-box;
+  width: 100%;
+  max-width: @task-timeline-default-container;
+  max-height: @task-timeline-default-container;
+  margin: 0 auto;
+  &::after{
+    -webkit-box-sizing: border-box;
+    -moz-box-sizing: border-box;
+    box-sizing: border-box;
+    content: "";
+    display: block;
+    padding-top: 100%;
+  }
+  .__mask{
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    &::after{
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      -webkit-box-sizing: border-box;
+      -moz-box-sizing: border-box;
+      box-sizing: border-box;
+      content: "";
+      display: block;
+      padding-top: 100%;
+      z-index: 2;
+      background: radial-gradient(transparent 0% , #ffffff 75%);
+    }
+    h1 {
+      position: absolute;
+      top: 50%;
+      transform: translate(0, -50%);
+      width: 100%;
+      text-align: center;
+    }
+  }
+  .__default__img{
+    position: relative;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    opacity: 0.5;
+  }
 }

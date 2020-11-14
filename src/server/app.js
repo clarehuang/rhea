@@ -37,6 +37,7 @@ app.use(
 app.use(passport.initialize())
 app.use(passport.session())
 app.use(express.static(path.join(__dirname, '../../dist/client'))) //靜態文件
+app.use(express.static(path.join(__dirname, '../../src/server/public'))) //靜態文件
 
 app.use('/api', apiRouter)
 app.use('/', indexRouter)

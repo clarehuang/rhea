@@ -1,6 +1,6 @@
 import React, { useEffect } from 'react'
 import { Timeline } from 'antd'
-import { EnvironmentOutlined, LoadingOutlined } from '@ant-design/icons'
+import { EnvironmentOutlined, LoadingOutlined, CalendarOutlined } from '@ant-design/icons'
 import { useSelector, useDispatch } from 'react-redux'
 import { default as TaskAction } from './taskAction'
 import { TaskData } from '../type'
@@ -21,6 +21,7 @@ const TaskTimeline: React.FC<TaskTimelineProps> = ({ filterValue }) => {
   const pickedDate = useSelector((state) => state.pickedDate)
   const isLoadingTasks = useSelector((state) => state.isLoadingTasks)
   const dispatch = useDispatch()
+  const i = Math.floor(Math.random() * Math.floor(3))
 
   const RenderTimeline = (items: TaskData, filterTagValue: string): React.ReactNode => {
     return items.map((item, index: number) => {
@@ -85,7 +86,16 @@ const TaskTimeline: React.FC<TaskTimelineProps> = ({ filterValue }) => {
   }
   return (
     <div className="task-timeline">
-      <Timeline mode="left">{RenderTimeline(tasks, filterValue)}</Timeline>
+      {tasks.length !== 0 ? (
+        <Timeline mode="left">{RenderTimeline(tasks, filterValue)}</Timeline>
+      ) : (
+        <div className="task-timeline__default __container">
+          <div className="__mask">
+            <h1>ADD NEW PLAN</h1>
+            <img className="__default__img" src={`/task-timeline-${i}.jpg`} alt="Add new todo!" />
+          </div>
+        </div>
+      )}
     </div>
   )
 }

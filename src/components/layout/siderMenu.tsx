@@ -14,8 +14,8 @@ const SiderMenu: React.FC = () => {
         src="https://www.rd.com/wp-content/uploads/2017/09/01-shutterstock_476340928-Irina-Bg.jpg"
       />
       <small className="xs-hidden sm-hidden md-hidden text-bold">Venessa Mars</small>
-      <NavLink to="/todo">{t('nav.todo')}</NavLink>
       <NavLink to="/stories">{t('nav.stories')}</NavLink>
+      <NavLink to="/todo">{t('nav.todo')}</NavLink>
       <NavLink to="/profile">{t('nav.profile')}</NavLink>
     </div>
   )
