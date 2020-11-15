@@ -9,3 +9,6 @@ $ npm i
 $ npm start
 ```
 
+## UI Design
+#### Planner - check tasks
+![screenshot](./preview/rhea-1.jpg)
