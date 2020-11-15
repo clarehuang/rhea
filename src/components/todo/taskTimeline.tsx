@@ -21,7 +21,7 @@ const TaskTimeline: React.FC<TaskTimelineProps> = ({ filterValue }) => {
   const pickedDate = useSelector((state) => state.pickedDate)
   const isLoadingTasks = useSelector((state) => state.isLoadingTasks)
   const dispatch = useDispatch()
-  const i = Math.floor(Math.random() * Math.floor(3))
+  const i = Math.floor(Math.random() * Math.floor(2))
 
   const RenderTimeline = (items: TaskData, filterTagValue: string): React.ReactNode => {
     return items.map((item, index: number) => {
