@@ -95,7 +95,7 @@ const Calendar: React.FC<CalendarProps> = ({
         tabIndex={0}
       >
         <Row className="date">
-          <h5 className="month">{mm}</h5>
+          <span className="month">{mm}.</span>
           <h1>{dd}</h1>
         </Row>
         <Row className="week">
@@ -105,7 +105,7 @@ const Calendar: React.FC<CalendarProps> = ({
       <div className="cover">
         <img alt={t('alt.coverImage')} src={imgUrl} />
       </div>
-      <div className="calendar-module">
+      <div className="module__calendar">
         <AntCalendar
           defaultValue={defaultValue}
           value={value}
